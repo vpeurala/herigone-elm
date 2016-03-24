@@ -18,6 +18,23 @@ allAssociations =
   , { number = "1", word = "jää" }
   , { number = "2", word = "kuu" }
   , { number = "3", word = "luu" }
+  , { number = "4", word = "maa" }
+  , { number = "5", word = "puu" }
+  , { number = "6", word = "rae" }
+  , { number = "7", word = "suu" }
+  , { number = "8", word = "täi" }
+  , { number = "9", word = "voi" }
+  , { number = "00", word = "hiha" }
+  , { number = "01", word = "häjy" }
+  , { number = "02", word = "hauki" }
+  , { number = "03", word = "huilu" }
+  , { number = "04", word = "haamu" }
+  , { number = "05", word = "huopa" }
+  , { number = "06", word = "hiiri" }
+  , { number = "07", word = "huusi" }
+  , { number = "08", word = "hauta" }
+  , { number = "09", word = "haavi" }
+  , { number = "10", word = "jauho" }
   ]
 
 
@@ -163,70 +180,38 @@ update action model =
           ( Over state, Effects.none )
 
 
+viewDiv : Address Action -> String -> String -> Html
+viewDiv address statusText inputValue =
+  div
+    []
+    [ div [] [ text statusText ]
+    , input
+        [ autofocus True
+        , onWithOptions
+            "keydown"
+            { preventDefault = True, stopPropagation = True }
+            keyCode
+            (\s -> Signal.message address (keyboard s))
+        , value inputValue
+        ]
+        []
+    ]
+
+
 view : Address Action -> Model -> Html
 view address model =
   case model of
     Initial ->
-      div
-        []
-        [ input
-            [ autofocus True
-            , onWithOptions
-                "keydown"
-                { preventDefault = True, stopPropagation = True }
-                keyCode
-                (\s -> Signal.message address (keyboard s))
-            ]
-            []
-        , div [] [ text "Initial" ]
-        ]
+      viewDiv address "Paina välilyöntiä aloittaaksesi" ""
 
     Running state ->
-      div
-        []
-        [ input
-            [ autofocus True
-            , onWithOptions
-                "keydown"
-                { preventDefault = True, stopPropagation = True }
-                keyCode
-                (\s -> Signal.message address (keyboard s))
-            , value state.input
-            ]
-            []
-        , div [] [ text ("Running " ++ state.input) ]
-        ]
+      viewDiv address state.current.number state.input
 
     Paused state ->
-      div
-        []
-        [ input
-            [ autofocus True
-            , onWithOptions
-                "keydown"
-                { preventDefault = True, stopPropagation = True }
-                keyCode
-                (\s -> Signal.message address (keyboard s))
-            ]
-            []
-        , div [] [ text "Paused" ]
-        ]
+      viewDiv address "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input
 
     Over state ->
-      div
-        []
-        [ input
-            [ autofocus True
-            , onWithOptions
-                "keydown"
-                { preventDefault = True, stopPropagation = True }
-                keyCode
-                (\s -> Signal.message address (keyboard s))
-            , value ""
-            ]
-            []
-        , div [] [ text "Over" ]
-        ]
+      viewDiv address "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input
 
 
 app : App Model

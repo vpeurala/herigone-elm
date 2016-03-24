@@ -10669,64 +10669,30 @@ Elm.Main.make = function (_elm) {
          default: var ch = $Char.fromCode(_p0);
            return $Char.isUpper(ch) ? Input(ch) : NoOp;}
    };
+   var viewDiv = F3(function (address,statusText,inputValue) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.div,_U.list([]),_U.list([$Html.text(statusText)]))
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.autofocus(true)
+                      ,A4($Html$Events.onWithOptions,
+                      "keydown",
+                      {preventDefault: true,stopPropagation: true},
+                      $Html$Events.keyCode,
+                      function (s) {
+                         return A2($Signal.message,address,keyboard(s));
+                      })
+                      ,$Html$Attributes.value(inputValue)]),
+              _U.list([]))]));
+   });
    var view = F2(function (address,model) {
       var _p1 = model;
       switch (_p1.ctor)
-      {case "Initial": return A2($Html.div,
-           _U.list([]),
-           _U.list([A2($Html.input,
-                   _U.list([$Html$Attributes.autofocus(true)
-                           ,A4($Html$Events.onWithOptions,
-                           "keydown",
-                           {preventDefault: true,stopPropagation: true},
-                           $Html$Events.keyCode,
-                           function (s) {
-                              return A2($Signal.message,address,keyboard(s));
-                           })]),
-                   _U.list([]))
-                   ,A2($Html.div,_U.list([]),_U.list([$Html.text("Initial")]))]));
+      {case "Initial": return A3(viewDiv,address,"Paina välilyöntiä aloittaaksesi","");
          case "Running": var _p2 = _p1._0;
-           return A2($Html.div,
-           _U.list([]),
-           _U.list([A2($Html.input,
-                   _U.list([$Html$Attributes.autofocus(true)
-                           ,A4($Html$Events.onWithOptions,
-                           "keydown",
-                           {preventDefault: true,stopPropagation: true},
-                           $Html$Events.keyCode,
-                           function (s) {
-                              return A2($Signal.message,address,keyboard(s));
-                           })
-                           ,$Html$Attributes.value(_p2.input)]),
-                   _U.list([]))
-                   ,A2($Html.div,_U.list([]),_U.list([$Html.text(A2($Basics._op["++"],"Running ",_p2.input))]))]));
-         case "Paused": return A2($Html.div,
-           _U.list([]),
-           _U.list([A2($Html.input,
-                   _U.list([$Html$Attributes.autofocus(true)
-                           ,A4($Html$Events.onWithOptions,
-                           "keydown",
-                           {preventDefault: true,stopPropagation: true},
-                           $Html$Events.keyCode,
-                           function (s) {
-                              return A2($Signal.message,address,keyboard(s));
-                           })]),
-                   _U.list([]))
-                   ,A2($Html.div,_U.list([]),_U.list([$Html.text("Paused")]))]));
-         default: return A2($Html.div,
-           _U.list([]),
-           _U.list([A2($Html.input,
-                   _U.list([$Html$Attributes.autofocus(true)
-                           ,A4($Html$Events.onWithOptions,
-                           "keydown",
-                           {preventDefault: true,stopPropagation: true},
-                           $Html$Events.keyCode,
-                           function (s) {
-                              return A2($Signal.message,address,keyboard(s));
-                           })
-                           ,$Html$Attributes.value("")]),
-                   _U.list([]))
-                   ,A2($Html.div,_U.list([]),_U.list([$Html.text("Over")]))]));}
+           return A3(viewDiv,address,_p2.current.number,_p2.input);
+         case "Paused": return A3(viewDiv,address,"Pysäytetty, paina välilyöntiä jatkaaksesi",_p1._0.input);
+         default: return A3(viewDiv,address,"Peli on loppu, paina välilyöntiä aloittaaksesi uuden",_p1._0.input);}
    });
    var GameState = F5(function (a,b,c,d,e) {    return {done: a,left: b,current: c,input: d,time: e};});
    var Over = function (a) {    return {ctor: "Over",_0: a};};
@@ -10735,11 +10701,31 @@ Elm.Main.make = function (_elm) {
    var Initial = {ctor: "Initial"};
    var init = {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
    var Association = F2(function (a,b) {    return {number: a,word: b};});
-   var allAssociations = _U.list([{number: "0",word: "hai"},{number: "1",word: "jää"},{number: "2",word: "kuu"},{number: "3",word: "luu"}]);
+   var allAssociations = _U.list([{number: "0",word: "hai"}
+                                 ,{number: "1",word: "jää"}
+                                 ,{number: "2",word: "kuu"}
+                                 ,{number: "3",word: "luu"}
+                                 ,{number: "4",word: "maa"}
+                                 ,{number: "5",word: "puu"}
+                                 ,{number: "6",word: "rae"}
+                                 ,{number: "7",word: "suu"}
+                                 ,{number: "8",word: "täi"}
+                                 ,{number: "9",word: "voi"}
+                                 ,{number: "00",word: "hiha"}
+                                 ,{number: "01",word: "häjy"}
+                                 ,{number: "02",word: "hauki"}
+                                 ,{number: "03",word: "huilu"}
+                                 ,{number: "04",word: "haamu"}
+                                 ,{number: "05",word: "huopa"}
+                                 ,{number: "06",word: "hiiri"}
+                                 ,{number: "07",word: "huusi"}
+                                 ,{number: "08",word: "hauta"}
+                                 ,{number: "09",word: "haavi"}
+                                 ,{number: "10",word: "jauho"}]);
    var startGame = function () {
       var _p3 = allAssociations;
       if (_p3.ctor === "[]") {
-            return _U.crashCase("Main",{start: {line: 81,column: 3},end: {line: 91,column: 8}},_p3)("No associations!");
+            return _U.crashCase("Main",{start: {line: 98,column: 3},end: {line: 108,column: 8}},_p3)("No associations!");
          } else {
             return {done: _U.list([]),left: _p3._1,current: _p3._0,input: "",time: 0};
          }
@@ -10797,6 +10783,7 @@ Elm.Main.make = function (_elm) {
                              ,startGame: startGame
                              ,init: init
                              ,update: update
+                             ,viewDiv: viewDiv
                              ,view: view
                              ,app: app
                              ,main: main};
