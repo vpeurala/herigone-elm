@@ -1,0 +1,23 @@
+body {
+  background-color: #a2af15;
+}
+
+.info {
+  text-align: center;
+}
+
+.info.initial {
+  font-size: 4em;
+}
+
+.info.running {
+  font-size: 9em;
+}
+
+.info.paused {
+  font-size: 4em;
+}
+
+.info.over {
+  font-size: 4em;
+}

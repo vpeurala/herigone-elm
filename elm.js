@@ -8285,166 +8285,6 @@ Elm.Json.Decode.make = function (_elm) {
                                     ,value: value
                                     ,customDecoder: customDecoder};
 };
-Elm.Set = Elm.Set || {};
-Elm.Set.make = function (_elm) {
-   "use strict";
-   _elm.Set = _elm.Set || {};
-   if (_elm.Set.values) return _elm.Set.values;
-   var _U = Elm.Native.Utils.make(_elm),$Basics = Elm.Basics.make(_elm),$Dict = Elm.Dict.make(_elm),$List = Elm.List.make(_elm);
-   var _op = {};
-   var foldr = F3(function (f,b,_p0) {    var _p1 = _p0;return A3($Dict.foldr,F3(function (k,_p2,b) {    return A2(f,k,b);}),b,_p1._0);});
-   var foldl = F3(function (f,b,_p3) {    var _p4 = _p3;return A3($Dict.foldl,F3(function (k,_p5,b) {    return A2(f,k,b);}),b,_p4._0);});
-   var toList = function (_p6) {    var _p7 = _p6;return $Dict.keys(_p7._0);};
-   var size = function (_p8) {    var _p9 = _p8;return $Dict.size(_p9._0);};
-   var member = F2(function (k,_p10) {    var _p11 = _p10;return A2($Dict.member,k,_p11._0);});
-   var isEmpty = function (_p12) {    var _p13 = _p12;return $Dict.isEmpty(_p13._0);};
-   var Set_elm_builtin = function (a) {    return {ctor: "Set_elm_builtin",_0: a};};
-   var empty = Set_elm_builtin($Dict.empty);
-   var singleton = function (k) {    return Set_elm_builtin(A2($Dict.singleton,k,{ctor: "_Tuple0"}));};
-   var insert = F2(function (k,_p14) {    var _p15 = _p14;return Set_elm_builtin(A3($Dict.insert,k,{ctor: "_Tuple0"},_p15._0));});
-   var fromList = function (xs) {    return A3($List.foldl,insert,empty,xs);};
-   var map = F2(function (f,s) {    return fromList(A2($List.map,f,toList(s)));});
-   var remove = F2(function (k,_p16) {    var _p17 = _p16;return Set_elm_builtin(A2($Dict.remove,k,_p17._0));});
-   var union = F2(function (_p19,_p18) {    var _p20 = _p19;var _p21 = _p18;return Set_elm_builtin(A2($Dict.union,_p20._0,_p21._0));});
-   var intersect = F2(function (_p23,_p22) {    var _p24 = _p23;var _p25 = _p22;return Set_elm_builtin(A2($Dict.intersect,_p24._0,_p25._0));});
-   var diff = F2(function (_p27,_p26) {    var _p28 = _p27;var _p29 = _p26;return Set_elm_builtin(A2($Dict.diff,_p28._0,_p29._0));});
-   var filter = F2(function (p,_p30) {    var _p31 = _p30;return Set_elm_builtin(A2($Dict.filter,F2(function (k,_p32) {    return p(k);}),_p31._0));});
-   var partition = F2(function (p,_p33) {
-      var _p34 = _p33;
-      var _p35 = A2($Dict.partition,F2(function (k,_p36) {    return p(k);}),_p34._0);
-      var p1 = _p35._0;
-      var p2 = _p35._1;
-      return {ctor: "_Tuple2",_0: Set_elm_builtin(p1),_1: Set_elm_builtin(p2)};
-   });
-   return _elm.Set.values = {_op: _op
-                            ,empty: empty
-                            ,singleton: singleton
-                            ,insert: insert
-                            ,remove: remove
-                            ,isEmpty: isEmpty
-                            ,member: member
-                            ,size: size
-                            ,foldl: foldl
-                            ,foldr: foldr
-                            ,map: map
-                            ,filter: filter
-                            ,partition: partition
-                            ,union: union
-                            ,intersect: intersect
-                            ,diff: diff
-                            ,toList: toList
-                            ,fromList: fromList};
-};
-Elm.Native.Keyboard = {};
-
-Elm.Native.Keyboard.make = function(localRuntime) {
-	localRuntime.Native = localRuntime.Native || {};
-	localRuntime.Native.Keyboard = localRuntime.Native.Keyboard || {};
-	if (localRuntime.Native.Keyboard.values)
-	{
-		return localRuntime.Native.Keyboard.values;
-	}
-
-	var NS = Elm.Native.Signal.make(localRuntime);
-
-
-	function keyEvent(event)
-	{
-		return {
-			alt: event.altKey,
-			meta: event.metaKey,
-			keyCode: event.keyCode
-		};
-	}
-
-
-	function keyStream(node, eventName, handler)
-	{
-		var stream = NS.input(eventName, { alt: false, meta: false, keyCode: 0 });
-
-		localRuntime.addListener([stream.id], node, eventName, function(e) {
-			localRuntime.notify(stream.id, handler(e));
-		});
-
-		return stream;
-	}
-
-	var downs = keyStream(document, 'keydown', keyEvent);
-	var ups = keyStream(document, 'keyup', keyEvent);
-	var presses = keyStream(document, 'keypress', keyEvent);
-	var blurs = keyStream(window, 'blur', function() { return null; });
-
-
-	return localRuntime.Native.Keyboard.values = {
-		downs: downs,
-		ups: ups,
-		blurs: blurs,
-		presses: presses
-	};
-};
-
-Elm.Keyboard = Elm.Keyboard || {};
-Elm.Keyboard.make = function (_elm) {
-   "use strict";
-   _elm.Keyboard = _elm.Keyboard || {};
-   if (_elm.Keyboard.values) return _elm.Keyboard.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Char = Elm.Char.make(_elm),
-   $Native$Keyboard = Elm.Native.Keyboard.make(_elm),
-   $Set = Elm.Set.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var presses = A2($Signal.map,function (_) {    return _.keyCode;},$Native$Keyboard.presses);
-   var toXY = F2(function (_p0,keyCodes) {
-      var _p1 = _p0;
-      var is = function (keyCode) {    return A2($Set.member,keyCode,keyCodes) ? 1 : 0;};
-      return {x: is(_p1.right) - is(_p1.left),y: is(_p1.up) - is(_p1.down)};
-   });
-   var Directions = F4(function (a,b,c,d) {    return {up: a,down: b,left: c,right: d};});
-   var dropMap = F2(function (f,signal) {    return $Signal.dropRepeats(A2($Signal.map,f,signal));});
-   var EventInfo = F3(function (a,b,c) {    return {alt: a,meta: b,keyCode: c};});
-   var Blur = {ctor: "Blur"};
-   var Down = function (a) {    return {ctor: "Down",_0: a};};
-   var Up = function (a) {    return {ctor: "Up",_0: a};};
-   var rawEvents = $Signal.mergeMany(_U.list([A2($Signal.map,Up,$Native$Keyboard.ups)
-                                             ,A2($Signal.map,Down,$Native$Keyboard.downs)
-                                             ,A2($Signal.map,$Basics.always(Blur),$Native$Keyboard.blurs)]));
-   var empty = {alt: false,meta: false,keyCodes: $Set.empty};
-   var update = F2(function (event,model) {
-      var _p2 = event;
-      switch (_p2.ctor)
-      {case "Down": var _p3 = _p2._0;
-           return {alt: _p3.alt,meta: _p3.meta,keyCodes: A2($Set.insert,_p3.keyCode,model.keyCodes)};
-         case "Up": var _p4 = _p2._0;
-           return {alt: _p4.alt,meta: _p4.meta,keyCodes: A2($Set.remove,_p4.keyCode,model.keyCodes)};
-         default: return empty;}
-   });
-   var model = A3($Signal.foldp,update,empty,rawEvents);
-   var alt = A2(dropMap,function (_) {    return _.alt;},model);
-   var meta = A2(dropMap,function (_) {    return _.meta;},model);
-   var keysDown = A2(dropMap,function (_) {    return _.keyCodes;},model);
-   var arrows = A2(dropMap,toXY({up: 38,down: 40,left: 37,right: 39}),keysDown);
-   var wasd = A2(dropMap,toXY({up: 87,down: 83,left: 65,right: 68}),keysDown);
-   var isDown = function (keyCode) {    return A2(dropMap,$Set.member(keyCode),keysDown);};
-   var ctrl = isDown(17);
-   var shift = isDown(16);
-   var space = isDown(32);
-   var enter = isDown(13);
-   var Model = F3(function (a,b,c) {    return {alt: a,meta: b,keyCodes: c};});
-   return _elm.Keyboard.values = {_op: _op
-                                 ,arrows: arrows
-                                 ,wasd: wasd
-                                 ,enter: enter
-                                 ,space: space
-                                 ,ctrl: ctrl
-                                 ,shift: shift
-                                 ,alt: alt
-                                 ,meta: meta
-                                 ,isDown: isDown
-                                 ,keysDown: keysDown
-                                 ,presses: presses};
-};
 Elm.Native.Effects = {};
 Elm.Native.Effects.make = function(localRuntime) {
 
@@ -10849,29 +10689,55 @@ Elm.Main.make = function (_elm) {
    $Debug = Elm.Debug.make(_elm),
    $Effects = Elm.Effects.make(_elm),
    $Html = Elm.Html.make(_elm),
-   $Keyboard = Elm.Keyboard.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Set = Elm.Set.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $StartApp = Elm.StartApp.make(_elm),
    $String = Elm.String.make(_elm),
    $Task = Elm.Task.make(_elm);
    var _op = {};
-   var view = F2(function (address,model) {
-      var _p0 = model;
-      switch (_p0.ctor)
-      {case "Initial": return A2($Html.input,_U.list([]),_U.list([$Html.text("Initial")]));
-         case "Running": return A2($Html.div,_U.list([]),_U.list([$Html.text(A2($Basics._op["++"],"Running ",_p0._0.input))]));
-         case "Paused": return A2($Html.div,_U.list([]),_U.list([$Html.text("Paused")]));
-         default: return A2($Html.div,_U.list([]),_U.list([$Html.text("Over")]));}
-   });
-   var randomAssociation = {number: "00",word: "hiha"};
+   var Backspace = {ctor: "Backspace"};
    var Input = function (a) {    return {ctor: "Input",_0: a};};
    var StartOrPause = {ctor: "StartOrPause"};
    var NoOp = {ctor: "NoOp"};
-   var keyboard = function (x) {    var _p1 = A2($Debug.log,"keysDown: ",x);return NoOp;};
+   var keyboard = function (x) {
+      var _p0 = x;
+      switch (_p0)
+      {case 32: return StartOrPause;
+         case 8: return Backspace;
+         case 222: return Input(_U.chr("Ä"));
+         case 186: return Input(_U.chr("Ö"));
+         default: var ch = $Char.fromCode(_p0);
+           return $Char.isUpper(ch) ? Input(ch) : NoOp;}
+   };
+   var viewDiv = F4(function (address,statusText,inputValue,statusClass) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.div,_U.list([$Html$Attributes.$class(A2($Basics._op["++"],"info ",statusClass))]),_U.list([$Html.text(statusText)]))
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.autofocus(true)
+                      ,A4($Html$Events.onWithOptions,
+                      "keydown",
+                      {preventDefault: true,stopPropagation: true},
+                      $Html$Events.keyCode,
+                      function (s) {
+                         return A2($Signal.message,address,keyboard(s));
+                      })
+                      ,$Html$Attributes.value(inputValue)]),
+              _U.list([]))]));
+   });
+   var view = F2(function (address,model) {
+      var _p1 = model;
+      switch (_p1.ctor)
+      {case "Initial": return A4(viewDiv,address,"Paina välilyöntiä aloittaaksesi","","initial");
+         case "Running": var _p2 = _p1._0;
+           return A4(viewDiv,address,_p2.current.number,_p2.input,"running");
+         case "Paused": return A4(viewDiv,address,"Pysäytetty, paina välilyöntiä jatkaaksesi",_p1._0.input,"paused");
+         default: return A4(viewDiv,address,"Peli on loppu, paina välilyöntiä aloittaaksesi uuden",_p1._0.input,"over");}
+   });
    var GameState = F5(function (a,b,c,d,e) {    return {done: a,left: b,current: c,input: d,time: e};});
    var Over = function (a) {    return {ctor: "Over",_0: a};};
    var Paused = function (a) {    return {ctor: "Paused",_0: a};};
@@ -10879,42 +10745,67 @@ Elm.Main.make = function (_elm) {
    var Initial = {ctor: "Initial"};
    var init = {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
    var Association = F2(function (a,b) {    return {number: a,word: b};});
-   var allAssociations = _U.list([{number: "0",word: "hai"},{number: "1",word: "jää"},{number: "2",word: "kuu"},{number: "3",word: "luu"}]);
+   var allAssociations = _U.list([{number: "0",word: "hai"}
+                                 ,{number: "1",word: "jää"}
+                                 ,{number: "2",word: "kuu"}
+                                 ,{number: "3",word: "luu"}
+                                 ,{number: "4",word: "maa"}
+                                 ,{number: "5",word: "puu"}
+                                 ,{number: "6",word: "rae"}
+                                 ,{number: "7",word: "suu"}
+                                 ,{number: "8",word: "täi"}
+                                 ,{number: "9",word: "voi"}
+                                 ,{number: "00",word: "hiha"}
+                                 ,{number: "01",word: "häjy"}
+                                 ,{number: "02",word: "hauki"}
+                                 ,{number: "03",word: "huilu"}
+                                 ,{number: "04",word: "haamu"}
+                                 ,{number: "05",word: "huopa"}
+                                 ,{number: "06",word: "hiiri"}
+                                 ,{number: "07",word: "huusi"}
+                                 ,{number: "08",word: "hauta"}
+                                 ,{number: "09",word: "haavi"}
+                                 ,{number: "10",word: "jauho"}]);
    var startGame = function () {
-      var _p2 = allAssociations;
-      if (_p2.ctor === "[]") {
-            return _U.crashCase("Main",{start: {line: 83,column: 3},end: {line: 93,column: 8}},_p2)("No associations!");
+      var _p3 = allAssociations;
+      if (_p3.ctor === "[]") {
+            return _U.crashCase("Main",{start: {line: 98,column: 3},end: {line: 108,column: 8}},_p3)("No associations!");
          } else {
-            return {done: _U.list([]),left: _p2._1,current: _p2._0,input: "",time: 0};
+            return {done: _U.list([]),left: _p3._1,current: _p3._0,input: "",time: 0};
          }
    }();
    var update = F2(function (action,model) {
-      var _p4 = {ctor: "_Tuple2",_0: action,_1: model};
-      switch (_p4._0.ctor)
-      {case "NoOp": return {ctor: "_Tuple2",_0: _p4._1,_1: $Effects.none};
-         case "StartOrPause": var _p5 = _p4._1;
-           switch (_p5.ctor)
+      var _p5 = {ctor: "_Tuple2",_0: action,_1: model};
+      switch (_p5._0.ctor)
+      {case "NoOp": return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
+         case "StartOrPause": switch (_p5._1.ctor)
            {case "Initial": return {ctor: "_Tuple2",_0: Running(startGame),_1: $Effects.none};
-              case "Running": return {ctor: "_Tuple2",_0: Paused(_p5._0),_1: $Effects.none};
-              case "Paused": return {ctor: "_Tuple2",_0: Running(_p5._0),_1: $Effects.none};
+              case "Running": return {ctor: "_Tuple2",_0: Paused(_p5._1._0),_1: $Effects.none};
+              case "Paused": return {ctor: "_Tuple2",_0: Running(_p5._1._0),_1: $Effects.none};
               default: return {ctor: "_Tuple2",_0: Running(startGame),_1: $Effects.none};}
-         default: var _p6 = _p4._1;
-           switch (_p6.ctor)
-           {case "Initial": return {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
-              case "Running": var _p8 = _p6._0;
-                var input$ = A2($Basics._op["++"],_p8.input,$String.fromChar(_p4._0._0));
-                if (_U.eq(input$,_p8.current.word)) {
-                      var _p7 = _p8.left;
-                      if (_p7.ctor === "[]") {
-                            return {ctor: "_Tuple2",_0: Over(_p8),_1: $Effects.none};
-                         } else {
-                            return {ctor: "_Tuple2",_0: Running(_U.update(_p8,{input: "",current: _p7._0,left: _p7._1})),_1: $Effects.none};
-                         }
-                   } else return {ctor: "_Tuple2",_0: Running(_U.update(_p8,{input: input$})),_1: $Effects.none};
-              case "Paused": return {ctor: "_Tuple2",_0: Paused(_p6._0),_1: $Effects.none};
-              default: return {ctor: "_Tuple2",_0: Over(_p6._0),_1: $Effects.none};}}
+         case "Input": if (_p5._1.ctor === "Running") {
+                 var _p7 = _p5._1._0;
+                 var input$ = A2($Basics._op["++"],_p7.input,$String.fromChar(_p5._0._0));
+                 if (_U.eq($String.toUpper(input$),$String.toUpper(_p7.current.word))) {
+                       var _p6 = _p7.left;
+                       if (_p6.ctor === "[]") {
+                             return {ctor: "_Tuple2",_0: Over(_U.update(_p7,{input: input$})),_1: $Effects.none};
+                          } else {
+                             return {ctor: "_Tuple2",_0: Running(_U.update(_p7,{input: "",current: _p6._0,left: _p6._1})),_1: $Effects.none};
+                          }
+                    } else return {ctor: "_Tuple2",_0: Running(_U.update(_p7,{input: input$})),_1: $Effects.none};
+              } else {
+                 return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
+              }
+         default: if (_p5._1.ctor === "Running") {
+                 var _p8 = _p5._1._0;
+                 var input$ = A3($String.slice,0,-1,_p8.input);
+                 return {ctor: "_Tuple2",_0: Running(_U.update(_p8,{input: input$})),_1: $Effects.none};
+              } else {
+                 return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
+              }}
    });
-   var app = $StartApp.start({init: init,inputs: _U.list([A2($Signal.map,keyboard,$Keyboard.keysDown)]),update: update,view: view});
+   var app = $StartApp.start({init: init,inputs: _U.list([]),update: update,view: view});
    var main = app.html;
    var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",app.tasks);
    return _elm.Main.values = {_op: _op
@@ -10928,11 +10819,12 @@ Elm.Main.make = function (_elm) {
                              ,NoOp: NoOp
                              ,StartOrPause: StartOrPause
                              ,Input: Input
+                             ,Backspace: Backspace
                              ,keyboard: keyboard
-                             ,randomAssociation: randomAssociation
                              ,startGame: startGame
                              ,init: init
                              ,update: update
+                             ,viewDiv: viewDiv
                              ,view: view
                              ,app: app
                              ,main: main};

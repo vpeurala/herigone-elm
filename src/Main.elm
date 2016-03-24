@@ -4,7 +4,7 @@ import Char exposing (KeyCode, fromCode, isLower, isUpper)
 import Debug exposing (..)
 import Effects exposing (Effects, Never)
 import Html exposing (..)
-import Html.Attributes exposing (autofocus, tabindex, value)
+import Html.Attributes exposing (autofocus, class, tabindex, value)
 import Html.Events exposing (..)
 import Signal exposing (Address)
 import StartApp exposing (App, start)
@@ -162,11 +162,11 @@ update action model =
       ( model, Effects.none )
 
 
-viewDiv : Address Action -> String -> String -> Html
-viewDiv address statusText inputValue =
+viewDiv : Address Action -> String -> String -> String -> Html
+viewDiv address statusText inputValue statusClass =
   div
     []
-    [ div [] [ text statusText ]
+    [ div [ class ("info " ++ statusClass) ] [ text statusText ]
     , input
         [ autofocus True
         , onWithOptions
@@ -184,16 +184,16 @@ view : Address Action -> Model -> Html
 view address model =
   case model of
     Initial ->
-      viewDiv address "Paina välilyöntiä aloittaaksesi" ""
+      viewDiv address "Paina välilyöntiä aloittaaksesi" "" "initial"
 
     Running state ->
-      viewDiv address state.current.number state.input
+      viewDiv address state.current.number state.input "running"
 
     Paused state ->
-      viewDiv address "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input
+      viewDiv address "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
 
     Over state ->
-      viewDiv address "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input
+      viewDiv address "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
 
 
 app : App Model
