@@ -121,63 +121,45 @@ update action model =
     ( NoOp, model ) ->
       ( model, Effects.none )
 
-    ( StartOrPause, model ) ->
-      case model of
-        Initial ->
-          ( Running startGame, Effects.none )
+    ( StartOrPause, Initial ) ->
+      ( Running startGame, Effects.none )
 
-        Running state ->
-          ( Paused state, Effects.none )
+    ( StartOrPause, Running state ) ->
+      ( Paused state, Effects.none )
 
-        Paused state ->
-          ( Running state, Effects.none )
+    ( StartOrPause, Paused state ) ->
+      ( Running state, Effects.none )
 
-        Over state ->
-          ( Running startGame, Effects.none )
+    ( StartOrPause, Over state ) ->
+      ( Running startGame, Effects.none )
+
+    ( Input c, Running state ) ->
+      let
+        input' =
+          state.input ++ (String.fromChar c)
+      in
+        if toUpper input' == toUpper state.current.word then
+          case state.left of
+            [] ->
+              ( Over { state | input = input' }, Effects.none )
+
+            x :: xs ->
+              ( Running { state | input = "", current = x, left = xs }, Effects.none )
+        else
+          ( Running { state | input = input' }, Effects.none )
 
     ( Input c, model ) ->
-      case model of
-        Initial ->
-          ( Initial, Effects.none )
+      ( model, Effects.none )
 
-        Running state ->
-          let
-            input' =
-              state.input ++ (String.fromChar c)
-          in
-            if toUpper input' == toUpper state.current.word then
-              case state.left of
-                [] ->
-                  ( Over { state | input = input' }, Effects.none )
-
-                x :: xs ->
-                  ( Running { state | input = "", current = x, left = xs }, Effects.none )
-            else
-              ( Running { state | input = input' }, Effects.none )
-
-        Paused state ->
-          ( Paused state, Effects.none )
-
-        Over state ->
-          ( Over state, Effects.none )
+    ( Backspace, Running state ) ->
+      let
+        input' =
+          String.slice 0 -1 state.input
+      in
+        ( Running { state | input = input' }, Effects.none )
 
     ( Backspace, model ) ->
-      case model of
-        Initial ->
-          ( Initial, Effects.none )
-
-        Running state ->
-          let
-            input' =
-              String.slice 0 -1 state.input
-          in
-            ( Running { state | input = input' }, Effects.none )
-
-        Paused state ->
-          ( Paused state, Effects.none )
-
-        Over state ->
-          ( Over state, Effects.none )
+      ( model, Effects.none )
 
 
 viewDiv : Address Action -> String -> String -> Html

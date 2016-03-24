@@ -10734,35 +10734,32 @@ Elm.Main.make = function (_elm) {
       var _p5 = {ctor: "_Tuple2",_0: action,_1: model};
       switch (_p5._0.ctor)
       {case "NoOp": return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
-         case "StartOrPause": var _p6 = _p5._1;
-           switch (_p6.ctor)
+         case "StartOrPause": switch (_p5._1.ctor)
            {case "Initial": return {ctor: "_Tuple2",_0: Running(startGame),_1: $Effects.none};
-              case "Running": return {ctor: "_Tuple2",_0: Paused(_p6._0),_1: $Effects.none};
-              case "Paused": return {ctor: "_Tuple2",_0: Running(_p6._0),_1: $Effects.none};
+              case "Running": return {ctor: "_Tuple2",_0: Paused(_p5._1._0),_1: $Effects.none};
+              case "Paused": return {ctor: "_Tuple2",_0: Running(_p5._1._0),_1: $Effects.none};
               default: return {ctor: "_Tuple2",_0: Running(startGame),_1: $Effects.none};}
-         case "Input": var _p7 = _p5._1;
-           switch (_p7.ctor)
-           {case "Initial": return {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
-              case "Running": var _p9 = _p7._0;
-                var input$ = A2($Basics._op["++"],_p9.input,$String.fromChar(_p5._0._0));
-                if (_U.eq($String.toUpper(input$),$String.toUpper(_p9.current.word))) {
-                      var _p8 = _p9.left;
-                      if (_p8.ctor === "[]") {
-                            return {ctor: "_Tuple2",_0: Over(_U.update(_p9,{input: input$})),_1: $Effects.none};
-                         } else {
-                            return {ctor: "_Tuple2",_0: Running(_U.update(_p9,{input: "",current: _p8._0,left: _p8._1})),_1: $Effects.none};
-                         }
-                   } else return {ctor: "_Tuple2",_0: Running(_U.update(_p9,{input: input$})),_1: $Effects.none};
-              case "Paused": return {ctor: "_Tuple2",_0: Paused(_p7._0),_1: $Effects.none};
-              default: return {ctor: "_Tuple2",_0: Over(_p7._0),_1: $Effects.none};}
-         default: var _p10 = _p5._1;
-           switch (_p10.ctor)
-           {case "Initial": return {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
-              case "Running": var _p11 = _p10._0;
-                var input$ = A3($String.slice,0,-1,_p11.input);
-                return {ctor: "_Tuple2",_0: Running(_U.update(_p11,{input: input$})),_1: $Effects.none};
-              case "Paused": return {ctor: "_Tuple2",_0: Paused(_p10._0),_1: $Effects.none};
-              default: return {ctor: "_Tuple2",_0: Over(_p10._0),_1: $Effects.none};}}
+         case "Input": if (_p5._1.ctor === "Running") {
+                 var _p7 = _p5._1._0;
+                 var input$ = A2($Basics._op["++"],_p7.input,$String.fromChar(_p5._0._0));
+                 if (_U.eq($String.toUpper(input$),$String.toUpper(_p7.current.word))) {
+                       var _p6 = _p7.left;
+                       if (_p6.ctor === "[]") {
+                             return {ctor: "_Tuple2",_0: Over(_U.update(_p7,{input: input$})),_1: $Effects.none};
+                          } else {
+                             return {ctor: "_Tuple2",_0: Running(_U.update(_p7,{input: "",current: _p6._0,left: _p6._1})),_1: $Effects.none};
+                          }
+                    } else return {ctor: "_Tuple2",_0: Running(_U.update(_p7,{input: input$})),_1: $Effects.none};
+              } else {
+                 return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
+              }
+         default: if (_p5._1.ctor === "Running") {
+                 var _p8 = _p5._1._0;
+                 var input$ = A3($String.slice,0,-1,_p8.input);
+                 return {ctor: "_Tuple2",_0: Running(_U.update(_p8,{input: input$})),_1: $Effects.none};
+              } else {
+                 return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
+              }}
    });
    var app = $StartApp.start({init: init,inputs: _U.list([]),update: update,view: view});
    var main = app.html;
