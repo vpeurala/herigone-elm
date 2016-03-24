@@ -1,12 +1,14 @@
 module Main (..) where
 
+import Char exposing (KeyCode, fromCode, isLower, isUpper)
+import Debug exposing (..)
 import Effects exposing (Effects, Never)
 import Html exposing (..)
-import Html.Attributes exposing (tabindex)
+import Html.Attributes exposing (autofocus, tabindex, value)
 import Html.Events exposing (..)
-import Keyboard exposing (space)
 import Signal exposing (Address)
 import StartApp exposing (App, start)
+import String exposing (fromChar, toUpper)
 import Task exposing (Task)
 
 
@@ -36,23 +38,42 @@ type alias GameState =
   { done : List Association
   , left : List Association
   , current : Association
+  , input : String
   , time : Int
   }
 
 
 type Action
   = NoOp
-  | Space
+  | StartOrPause
+  | Input Char
+  | Backspace
 
 
 keyboard : Int -> Action
 keyboard x =
-  case x of
+  case (log "keyboard: " x) of
     32 ->
-      Space
+      StartOrPause
 
-    _ ->
-      NoOp
+    8 ->
+      Backspace
+
+    222 ->
+      Input 'Ä'
+
+    186 ->
+      Input 'Ö'
+
+    c ->
+      let
+        ch =
+          fromCode c
+      in
+        if isUpper ch || isLower ch then
+          Input ch
+        else
+          NoOp
 
 
 randomAssociation : Association
@@ -62,11 +83,17 @@ randomAssociation =
 
 startGame : GameState
 startGame =
-  { done = []
-  , left = allAssociations
-  , current = randomAssociation
-  , time = 0
-  }
+  case allAssociations of
+    [] ->
+      Debug.crash "No associations!"
+
+    x :: xs ->
+      { done = []
+      , left = xs
+      , current = x
+      , input = ""
+      , time = 0
+      }
 
 
 init : ( Model, Effects Action )
@@ -82,7 +109,7 @@ update action model =
     ( NoOp, model ) ->
       ( model, Effects.none )
 
-    ( Space, model ) ->
+    ( StartOrPause, model ) ->
       case model of
         Initial ->
           ( Running startGame, Effects.none )
@@ -96,6 +123,50 @@ update action model =
         Over state ->
           ( Running startGame, Effects.none )
 
+    ( Input c, model ) ->
+      case model of
+        Initial ->
+          ( Initial, Effects.none )
+
+        Running state ->
+          let
+            input' =
+              state.input ++ (String.fromChar c)
+          in
+            if toUpper input' == toUpper state.current.word then
+              case state.left of
+                [] ->
+                  ( Over state, Effects.none )
+
+                x :: xs ->
+                  ( Running { state | input = "", current = x, left = xs }, Effects.none )
+            else
+              ( Running { state | input = input' }, Effects.none )
+
+        Paused state ->
+          ( Paused state, Effects.none )
+
+        Over state ->
+          ( Over state, Effects.none )
+
+    ( Backspace, model ) ->
+      case model of
+        Initial ->
+          ( Initial, Effects.none )
+
+        Running state ->
+          let
+            input' =
+              String.slice 0 -1 state.input
+          in
+            ( Running { state | input = input' }, Effects.none )
+
+        Paused state ->
+          ( Paused state, Effects.none )
+
+        Over state ->
+          ( Over state, Effects.none )
+
 
 view : Address Action -> Model -> Html
 view address model =
@@ -103,23 +174,70 @@ view address model =
     Initial ->
       div
         []
-        [ text "Initial" ]
+        [ input
+            [ autofocus True
+            , onWithOptions
+                "keydown"
+                { preventDefault = True, stopPropagation = True }
+                keyCode
+                (\s -> Signal.message address (keyboard s))
+            ]
+            []
+        , div [] [ text "Initial" ]
+        ]
 
     Running state ->
-      div [] [ text "Running" ]
+      div
+        []
+        [ input
+            [ autofocus True
+            , onWithOptions
+                "keydown"
+                { preventDefault = True, stopPropagation = True }
+                keyCode
+                (\s -> Signal.message address (keyboard s))
+            , value state.input
+            ]
+            []
+        , div [] [ text ("Running " ++ state.input) ]
+        ]
 
     Paused state ->
-      div [] [ text "Paused" ]
+      div
+        []
+        [ input
+            [ autofocus True
+            , onWithOptions
+                "keydown"
+                { preventDefault = True, stopPropagation = True }
+                keyCode
+                (\s -> Signal.message address (keyboard s))
+            ]
+            []
+        , div [] [ text "Paused" ]
+        ]
 
     Over state ->
-      div [] [ text "Over" ]
+      div
+        []
+        [ input
+            [ autofocus True
+            , onWithOptions
+                "keydown"
+                { preventDefault = True, stopPropagation = True }
+                keyCode
+                (\s -> Signal.message address (keyboard s))
+            ]
+            []
+        , div [] [ text "Over" ]
+        ]
 
 
 app : App Model
 app =
   start
     { init = init
-    , inputs = [ Signal.map keyboard Keyboard.presses ]
+    , inputs = []
     , update = update
     , view = view
     }
