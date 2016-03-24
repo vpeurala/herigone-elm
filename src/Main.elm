@@ -52,7 +52,7 @@ type Action
 
 keyboard : Int -> Action
 keyboard x =
-  case (log "keyboard: " x) of
+  case x of
     32 ->
       StartOrPause
 
@@ -70,7 +70,7 @@ keyboard x =
         ch =
           fromCode c
       in
-        if isUpper ch || isLower ch then
+        if isUpper ch then
           Input ch
         else
           NoOp
@@ -131,7 +131,7 @@ update action model =
             if toUpper input' == toUpper state.current.word then
               case state.left of
                 [] ->
-                  ( Over state, Effects.none )
+                  ( Over { state | input = input' }, Effects.none )
 
                 x :: xs ->
                   ( Running { state | input = "", current = x, left = xs }, Effects.none )
@@ -222,6 +222,7 @@ view address model =
                 { preventDefault = True, stopPropagation = True }
                 keyCode
                 (\s -> Signal.message address (keyboard s))
+            , value ""
             ]
             []
         , div [] [ text "Over" ]

@@ -10655,20 +10655,19 @@ Elm.Main.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Task = Elm.Task.make(_elm);
    var _op = {};
-   var randomAssociation = {number: "00",word: "hiha"};
    var Backspace = {ctor: "Backspace"};
    var Input = function (a) {    return {ctor: "Input",_0: a};};
    var StartOrPause = {ctor: "StartOrPause"};
    var NoOp = {ctor: "NoOp"};
    var keyboard = function (x) {
-      var _p0 = A2($Debug.log,"keyboard: ",x);
+      var _p0 = x;
       switch (_p0)
       {case 32: return StartOrPause;
          case 8: return Backspace;
          case 222: return Input(_U.chr("Ä"));
          case 186: return Input(_U.chr("Ö"));
          default: var ch = $Char.fromCode(_p0);
-           return $Char.isUpper(ch) || $Char.isLower(ch) ? Input(ch) : NoOp;}
+           return $Char.isUpper(ch) ? Input(ch) : NoOp;}
    };
    var view = F2(function (address,model) {
       var _p1 = model;
@@ -10724,7 +10723,8 @@ Elm.Main.make = function (_elm) {
                            $Html$Events.keyCode,
                            function (s) {
                               return A2($Signal.message,address,keyboard(s));
-                           })]),
+                           })
+                           ,$Html$Attributes.value("")]),
                    _U.list([]))
                    ,A2($Html.div,_U.list([]),_U.list([$Html.text("Over")]))]));}
    });
@@ -10739,7 +10739,7 @@ Elm.Main.make = function (_elm) {
    var startGame = function () {
       var _p3 = allAssociations;
       if (_p3.ctor === "[]") {
-            return _U.crashCase("Main",{start: {line: 86,column: 3},end: {line: 96,column: 8}},_p3)("No associations!");
+            return _U.crashCase("Main",{start: {line: 81,column: 3},end: {line: 91,column: 8}},_p3)("No associations!");
          } else {
             return {done: _U.list([]),left: _p3._1,current: _p3._0,input: "",time: 0};
          }
@@ -10762,7 +10762,7 @@ Elm.Main.make = function (_elm) {
                 if (_U.eq($String.toUpper(input$),$String.toUpper(_p9.current.word))) {
                       var _p8 = _p9.left;
                       if (_p8.ctor === "[]") {
-                            return {ctor: "_Tuple2",_0: Over(_p9),_1: $Effects.none};
+                            return {ctor: "_Tuple2",_0: Over(_U.update(_p9,{input: input$})),_1: $Effects.none};
                          } else {
                             return {ctor: "_Tuple2",_0: Running(_U.update(_p9,{input: "",current: _p8._0,left: _p8._1})),_1: $Effects.none};
                          }
@@ -10794,7 +10794,6 @@ Elm.Main.make = function (_elm) {
                              ,Input: Input
                              ,Backspace: Backspace
                              ,keyboard: keyboard
-                             ,randomAssociation: randomAssociation
                              ,startGame: startGame
                              ,init: init
                              ,update: update
