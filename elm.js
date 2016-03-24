@@ -10791,7 +10791,9 @@ Elm.Main.make = function (_elm) {
                        if (_p6.ctor === "[]") {
                              return {ctor: "_Tuple2",_0: Over(_U.update(_p7,{input: input$})),_1: $Effects.none};
                           } else {
-                             return {ctor: "_Tuple2",_0: Running(_U.update(_p7,{input: "",current: _p6._0,left: _p6._1})),_1: $Effects.none};
+                             return {ctor: "_Tuple2"
+                                    ,_0: Running(_U.update(_p7,{input: "",current: _p6._0,left: _p6._1,done: A2($List._op["::"],_p7.current,_p7.done)}))
+                                    ,_1: $Effects.none};
                           }
                     } else return {ctor: "_Tuple2",_0: Running(_U.update(_p7,{input: input$})),_1: $Effects.none};
               } else {

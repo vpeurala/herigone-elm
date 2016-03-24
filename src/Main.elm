@@ -144,7 +144,7 @@ update action model =
               ( Over { state | input = input' }, Effects.none )
 
             x :: xs ->
-              ( Running { state | input = "", current = x, left = xs }, Effects.none )
+              ( Running { state | input = "", current = x, left = xs, done = state.current :: state.done }, Effects.none )
         else
           ( Running { state | input = input' }, Effects.none )
 
