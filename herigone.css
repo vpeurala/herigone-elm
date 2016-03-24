@@ -4,6 +4,8 @@ body {
 
 .info {
   text-align: center;
+  vertical-align: middle;
+  height: 166px;
 }
 
 .info.initial {
