@@ -76,11 +76,6 @@ keyboard x =
           NoOp
 
 
-randomAssociation : Association
-randomAssociation =
-  { number = "00", word = "hiha" }
-
-
 startGame : GameState
 startGame =
   case allAssociations of
