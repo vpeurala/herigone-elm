@@ -2,7 +2,9 @@ module Main (..) where
 
 import Effects exposing (Effects, Never)
 import Html exposing (..)
+import Html.Attributes exposing (tabindex)
 import Html.Events exposing (..)
+import Keyboard exposing (space)
 import Signal exposing (Address)
 import StartApp exposing (App, start)
 import Task exposing (Task)
@@ -40,7 +42,17 @@ type alias GameState =
 
 type Action
   = NoOp
-  | Start
+  | Space
+
+
+keyboard : Int -> Action
+keyboard x =
+  case x of
+    32 ->
+      Space
+
+    _ ->
+      NoOp
 
 
 randomAssociation : Association
@@ -66,12 +78,23 @@ init =
 
 update : Action -> Model -> ( Model, Effects Action )
 update action model =
-  case action of
-    NoOp ->
+  case ( action, model ) of
+    ( NoOp, model ) ->
       ( model, Effects.none )
 
-    Start ->
-      ( Running startGame, Effects.none )
+    ( Space, model ) ->
+      case model of
+        Initial ->
+          ( Running startGame, Effects.none )
+
+        Running state ->
+          ( Paused state, Effects.none )
+
+        Paused state ->
+          ( Running state, Effects.none )
+
+        Over state ->
+          ( Running startGame, Effects.none )
 
 
 view : Address Action -> Model -> Html
@@ -79,17 +102,7 @@ view address model =
   case model of
     Initial ->
       div
-        [ onKeyDown
-            address
-            (\code ->
-              case code of
-                32 ->
-                  Start
-
-                _ ->
-                  Start
-            )
-        ]
+        []
         [ text "Initial" ]
 
     Running state ->
@@ -106,7 +119,7 @@ app : App Model
 app =
   start
     { init = init
-    , inputs = []
+    , inputs = [ Signal.map keyboard Keyboard.presses ]
     , update = update
     , view = view
     }
