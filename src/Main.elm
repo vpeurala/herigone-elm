@@ -6,6 +6,7 @@ import Effects exposing (Effects, Never)
 import Html exposing (..)
 import Html.Attributes exposing (autofocus, class, tabindex, value)
 import Html.Events exposing (..)
+import Random exposing (initialSeed, int, generate, list)
 import Signal exposing (Address)
 import StartApp exposing (App, start)
 import String exposing (fromChar, toUpper)
@@ -36,6 +37,27 @@ type Action
   | Backspace
 
 
+shuffle : List a -> List a
+shuffle xs =
+  let
+    gen =
+      list (List.length xs) (int 0 1000)
+
+    seed =
+      initialSeed 7791
+
+    ( rands, _ ) =
+      generate gen seed
+
+    zips =
+      List.map2 (,) xs rands
+
+    sorted =
+      List.sortBy snd zips
+  in
+    List.map fst sorted
+
+
 keyboard : Int -> Action
 keyboard x =
   case x of
@@ -64,7 +86,7 @@ keyboard x =
 
 startGame : GameState
 startGame =
-  case allAssociations of
+  case (shuffle allAssociations) of
     [] ->
       Debug.crash "No associations!"
 
