@@ -10,38 +10,7 @@ import Signal exposing (Address)
 import StartApp exposing (App, start)
 import String exposing (fromChar, toUpper)
 import Task exposing (Task)
-
-
-allAssociations : List Association
-allAssociations =
-  [ { number = "0", word = "hai" }
-  , { number = "1", word = "jää" }
-  , { number = "2", word = "kuu" }
-  , { number = "3", word = "luu" }
-  , { number = "4", word = "maa" }
-  , { number = "5", word = "puu" }
-  , { number = "6", word = "rae" }
-  , { number = "7", word = "suu" }
-  , { number = "8", word = "täi" }
-  , { number = "9", word = "voi" }
-  , { number = "00", word = "hiha" }
-  , { number = "01", word = "häjy" }
-  , { number = "02", word = "hauki" }
-  , { number = "03", word = "huilu" }
-  , { number = "04", word = "haamu" }
-  , { number = "05", word = "huopa" }
-  , { number = "06", word = "hiiri" }
-  , { number = "07", word = "huusi" }
-  , { number = "08", word = "hauta" }
-  , { number = "09", word = "haavi" }
-  , { number = "10", word = "jauho" }
-  ]
-
-
-type alias Association =
-  { number : String
-  , word : String
-  }
+import Associations exposing (..)
 
 
 type Model

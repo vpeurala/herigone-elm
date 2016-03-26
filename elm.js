@@ -10678,73 +10678,19 @@ Elm.StartApp.make = function (_elm) {
    var Config = F4(function (a,b,c,d) {    return {init: a,update: b,view: c,inputs: d};});
    return _elm.StartApp.values = {_op: _op,start: start,Config: Config,App: App};
 };
-Elm.Main = Elm.Main || {};
-Elm.Main.make = function (_elm) {
+Elm.Associations = Elm.Associations || {};
+Elm.Associations.make = function (_elm) {
    "use strict";
-   _elm.Main = _elm.Main || {};
-   if (_elm.Main.values) return _elm.Main.values;
+   _elm.Associations = _elm.Associations || {};
+   if (_elm.Associations.values) return _elm.Associations.values;
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
-   $Char = Elm.Char.make(_elm),
    $Debug = Elm.Debug.make(_elm),
-   $Effects = Elm.Effects.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Html$Attributes = Elm.Html.Attributes.make(_elm),
-   $Html$Events = Elm.Html.Events.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $StartApp = Elm.StartApp.make(_elm),
-   $String = Elm.String.make(_elm),
-   $Task = Elm.Task.make(_elm);
+   $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var Backspace = {ctor: "Backspace"};
-   var Input = function (a) {    return {ctor: "Input",_0: a};};
-   var StartOrPause = {ctor: "StartOrPause"};
-   var NoOp = {ctor: "NoOp"};
-   var keyboard = function (x) {
-      var _p0 = x;
-      switch (_p0)
-      {case 32: return StartOrPause;
-         case 8: return Backspace;
-         case 222: return Input(_U.chr("Ä"));
-         case 186: return Input(_U.chr("Ö"));
-         default: var ch = $Char.fromCode(_p0);
-           return $Char.isUpper(ch) ? Input(ch) : NoOp;}
-   };
-   var viewDiv = F4(function (address,statusText,inputValue,statusClass) {
-      return A2($Html.div,
-      _U.list([]),
-      _U.list([A2($Html.div,_U.list([$Html$Attributes.$class(A2($Basics._op["++"],"info ",statusClass))]),_U.list([$Html.text(statusText)]))
-              ,A2($Html.input,
-              _U.list([$Html$Attributes.autofocus(true)
-                      ,A4($Html$Events.onWithOptions,
-                      "keydown",
-                      {preventDefault: true,stopPropagation: true},
-                      $Html$Events.keyCode,
-                      function (s) {
-                         return A2($Signal.message,address,keyboard(s));
-                      })
-                      ,$Html$Attributes.value(inputValue)]),
-              _U.list([]))]));
-   });
-   var view = F2(function (address,model) {
-      var _p1 = model;
-      switch (_p1.ctor)
-      {case "Initial": return A4(viewDiv,address,"Paina välilyöntiä aloittaaksesi","","initial");
-         case "Running": var _p2 = _p1._0;
-           return A4(viewDiv,address,_p2.current.number,_p2.input,"running");
-         case "Paused": return A4(viewDiv,address,"Pysäytetty, paina välilyöntiä jatkaaksesi",_p1._0.input,"paused");
-         default: return A4(viewDiv,address,"Peli on loppu, paina välilyöntiä aloittaaksesi uuden",_p1._0.input,"over");}
-   });
-   var GameState = F5(function (a,b,c,d,e) {    return {done: a,left: b,current: c,input: d,time: e};});
-   var Over = function (a) {    return {ctor: "Over",_0: a};};
-   var Paused = function (a) {    return {ctor: "Paused",_0: a};};
-   var Running = function (a) {    return {ctor: "Running",_0: a};};
-   var Initial = {ctor: "Initial"};
-   var init = {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
-   var Association = F2(function (a,b) {    return {number: a,word: b};});
    var allAssociations = _U.list([{number: "0",word: "hai"}
                                  ,{number: "1",word: "jää"}
                                  ,{number: "2",word: "kuu"}
@@ -10765,15 +10711,93 @@ Elm.Main.make = function (_elm) {
                                  ,{number: "07",word: "huusi"}
                                  ,{number: "08",word: "hauta"}
                                  ,{number: "09",word: "haavi"}
-                                 ,{number: "10",word: "jauho"}]);
+                                 ,{number: "10",word: "jauho"}
+                                 ,{number: "11",word: "jojo"}
+                                 ,{number: "12",word: "joki"}
+                                 ,{number: "13",word: "joulu"}
+                                 ,{number: "14",word: "juomu"}
+                                 ,{number: "15",word: "jopo"}
+                                 ,{number: "16",word: "juuri"}
+                                 ,{number: "17",word: "jousi"}
+                                 ,{number: "18",word: "jeti"}
+                                 ,{number: "19",word: "jyvä"}
+                                 ,{number: "20",word: "koho"}]);
+   var Association = F2(function (a,b) {    return {number: a,word: b};});
+   return _elm.Associations.values = {_op: _op,Association: Association,allAssociations: allAssociations};
+};
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values) return _elm.Main.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Associations = Elm.Associations.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Char = Elm.Char.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp = Elm.StartApp.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var _op = {};
    var startGame = function () {
-      var _p3 = allAssociations;
-      if (_p3.ctor === "[]") {
-            return _U.crashCase("Main",{start: {line: 98,column: 3},end: {line: 108,column: 8}},_p3)("No associations!");
+      var _p0 = $Associations.allAssociations;
+      if (_p0.ctor === "[]") {
+            return _U.crashCase("Main",{start: {line: 67,column: 3},end: {line: 77,column: 8}},_p0)("No associations!");
          } else {
-            return {done: _U.list([]),left: _p3._1,current: _p3._0,input: "",time: 0};
+            return {done: _U.list([]),left: _p0._1,current: _p0._0,input: "",time: 0};
          }
    }();
+   var Backspace = {ctor: "Backspace"};
+   var Input = function (a) {    return {ctor: "Input",_0: a};};
+   var StartOrPause = {ctor: "StartOrPause"};
+   var NoOp = {ctor: "NoOp"};
+   var keyboard = function (x) {
+      var _p2 = x;
+      switch (_p2)
+      {case 32: return StartOrPause;
+         case 8: return Backspace;
+         case 222: return Input(_U.chr("Ä"));
+         case 186: return Input(_U.chr("Ö"));
+         default: var ch = $Char.fromCode(_p2);
+           return $Char.isUpper(ch) ? Input(ch) : NoOp;}
+   };
+   var viewDiv = F4(function (address,statusText,inputValue,statusClass) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.div,_U.list([$Html$Attributes.$class(A2($Basics._op["++"],"info ",statusClass))]),_U.list([$Html.text(statusText)]))
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.autofocus(true)
+                      ,A4($Html$Events.onWithOptions,
+                      "keydown",
+                      {preventDefault: true,stopPropagation: true},
+                      $Html$Events.keyCode,
+                      function (s) {
+                         return A2($Signal.message,address,keyboard(s));
+                      })
+                      ,$Html$Attributes.value(inputValue)]),
+              _U.list([]))]));
+   });
+   var view = F2(function (address,model) {
+      var _p3 = model;
+      switch (_p3.ctor)
+      {case "Initial": return A4(viewDiv,address,"Paina välilyöntiä aloittaaksesi","","initial");
+         case "Running": var _p4 = _p3._0;
+           return A4(viewDiv,address,_p4.current.number,_p4.input,"running");
+         case "Paused": return A4(viewDiv,address,"Pysäytetty, paina välilyöntiä jatkaaksesi",_p3._0.input,"paused");
+         default: return A4(viewDiv,address,"Peli on loppu, paina välilyöntiä aloittaaksesi uuden",_p3._0.input,"over");}
+   });
+   var GameState = F5(function (a,b,c,d,e) {    return {done: a,left: b,current: c,input: d,time: e};});
+   var Over = function (a) {    return {ctor: "Over",_0: a};};
+   var Paused = function (a) {    return {ctor: "Paused",_0: a};};
+   var Running = function (a) {    return {ctor: "Running",_0: a};};
    var update = F2(function (action,model) {
       var _p5 = {ctor: "_Tuple2",_0: action,_1: model};
       switch (_p5._0.ctor)
@@ -10807,12 +10831,12 @@ Elm.Main.make = function (_elm) {
                  return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
               }}
    });
+   var Initial = {ctor: "Initial"};
+   var init = {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
    var app = $StartApp.start({init: init,inputs: _U.list([]),update: update,view: view});
    var main = app.html;
    var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",app.tasks);
    return _elm.Main.values = {_op: _op
-                             ,allAssociations: allAssociations
-                             ,Association: Association
                              ,Initial: Initial
                              ,Running: Running
                              ,Paused: Paused
