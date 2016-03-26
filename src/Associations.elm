@@ -40,4 +40,34 @@ allAssociations =
   , { number = "18", word = "jeti" }
   , { number = "19", word = "jyvä" }
   , { number = "20", word = "koho" }
+  , { number = "21", word = "koju" }
+  , { number = "22", word = "keko" }
+  , { number = "23", word = "kela" }
+  , { number = "24", word = "kuomu" }
+  , { number = "25", word = "kupu" }
+  , { number = "26", word = "koira" }
+  , { number = "27", word = "kuusi" }
+  , { number = "28", word = "kota" }
+  , { number = "29", word = "kavio" }
+  , { number = "30", word = "liha" }
+  , { number = "31", word = "lyijy" }
+  , { number = "32", word = "laki" }
+  , { number = "33", word = "luola" }
+  , { number = "34", word = "liima" }
+  , { number = "35", word = "lapio" }
+  , { number = "36", word = "luuri" }
+  , { number = "37", word = "liesi" }
+  , { number = "38", word = "luoti" }
+  , { number = "39", word = "laiva" }
+  , { number = "40", word = "maha" }
+  , { number = "41", word = "maja" }
+  , { number = "42", word = "muki" }
+  , { number = "43", word = "mela" }
+  , { number = "44", word = "muumi" }
+  , { number = "45", word = "mopo" }
+  , { number = "46", word = "muuri" }
+  , { number = "47", word = "muusi" }
+  , { number = "48", word = "mato" }
+  , { number = "49", word = "muovi" }
+  , { number = "50", word = "piha" }
   ]
