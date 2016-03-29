@@ -10955,7 +10955,7 @@ Elm.Associations.make = function (_elm) {
                                  ,{number: "24",word: "kuomu"}
                                  ,{number: "25",word: "kupu"}
                                  ,{number: "26",word: "koira"}
-                                 ,{number: "27",word: "kuusi"}
+                                 ,{number: "27",word: "kaasu"}
                                  ,{number: "28",word: "kota"}
                                  ,{number: "29",word: "kavio"}
                                  ,{number: "30",word: "liha"}
@@ -10978,7 +10978,56 @@ Elm.Associations.make = function (_elm) {
                                  ,{number: "47",word: "muusi"}
                                  ,{number: "48",word: "mato"}
                                  ,{number: "49",word: "muovi"}
-                                 ,{number: "50",word: "piha"}]);
+                                 ,{number: "50",word: "pyyhe"}
+                                 ,{number: "51",word: "poiju"}
+                                 ,{number: "52",word: "puku"}
+                                 ,{number: "53",word: "pulu"}
+                                 ,{number: "54",word: "puuma"}
+                                 ,{number: "55",word: "pipo"}
+                                 ,{number: "56",word: "pora"}
+                                 ,{number: "57",word: "puosu"}
+                                 ,{number: "58",word: "pata"}
+                                 ,{number: "59",word: "paavi"}
+                                 ,{number: "60",word: "raha"}
+                                 ,{number: "61",word: "ryijy"}
+                                 ,{number: "62",word: "reki"}
+                                 ,{number: "63",word: "railo"}
+                                 ,{number: "64",word: "riimu"}
+                                 ,{number: "65",word: "rapu"}
+                                 ,{number: "66",word: "ruori"}
+                                 ,{number: "67",word: "ruusu"}
+                                 ,{number: "68",word: "ruoto"}
+                                 ,{number: "69",word: "rovio"}
+                                 ,{number: "70",word: "saha"}
+                                 ,{number: "71",word: "soija"}
+                                 ,{number: "72",word: "sika"}
+                                 ,{number: "73",word: "siili"}
+                                 ,{number: "74",word: "siima"}
+                                 ,{number: "75",word: "siipi"}
+                                 ,{number: "76",word: "saari"}
+                                 ,{number: "77",word: "susi"}
+                                 ,{number: "78",word: "suti"}
+                                 ,{number: "79",word: "sauva"}
+                                 ,{number: "80",word: "tuohi"}
+                                 ,{number: "81",word: "taiji"}
+                                 ,{number: "82",word: "tiuku"}
+                                 ,{number: "83",word: "tuoli"}
+                                 ,{number: "84",word: "taimi"}
+                                 ,{number: "85",word: "tipu"}
+                                 ,{number: "86",word: "tiira"}
+                                 ,{number: "87",word: "teesi"}
+                                 ,{number: "88",word: "toti"}
+                                 ,{number: "89",word: "tavi"}
+                                 ,{number: "90",word: "vuohi"}
+                                 ,{number: "91",word: "vaja"}
+                                 ,{number: "92",word: "vaaka"}
+                                 ,{number: "93",word: "viulu"}
+                                 ,{number: "94",word: "vaimo"}
+                                 ,{number: "95",word: "vapa"}
+                                 ,{number: "96",word: "viiri"}
+                                 ,{number: "97",word: "vaasi"}
+                                 ,{number: "98",word: "vouti"}
+                                 ,{number: "99",word: "vauva"}]);
    var Association = F2(function (a,b) {    return {number: a,word: b};});
    return _elm.Associations.values = {_op: _op,Association: Association,allAssociations: allAssociations};
 };
