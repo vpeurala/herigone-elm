@@ -10866,45 +10866,6 @@ Elm.Html.Events.make = function (_elm) {
                                     ,keyCode: keyCode
                                     ,Options: Options};
 };
-Elm.StartApp = Elm.StartApp || {};
-Elm.StartApp.make = function (_elm) {
-   "use strict";
-   _elm.StartApp = _elm.StartApp || {};
-   if (_elm.StartApp.values) return _elm.StartApp.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Effects = Elm.Effects.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $Task = Elm.Task.make(_elm);
-   var _op = {};
-   var start = function (config) {
-      var updateStep = F2(function (action,_p0) {
-         var _p1 = _p0;
-         var _p2 = A2(config.update,action,_p1._0);
-         var newModel = _p2._0;
-         var additionalEffects = _p2._1;
-         return {ctor: "_Tuple2",_0: newModel,_1: $Effects.batch(_U.list([_p1._1,additionalEffects]))};
-      });
-      var update = F2(function (actions,_p3) {    var _p4 = _p3;return A3($List.foldl,updateStep,{ctor: "_Tuple2",_0: _p4._0,_1: $Effects.none},actions);});
-      var messages = $Signal.mailbox(_U.list([]));
-      var singleton = function (action) {    return _U.list([action]);};
-      var address = A2($Signal.forwardTo,messages.address,singleton);
-      var inputs = $Signal.mergeMany(A2($List._op["::"],messages.signal,A2($List.map,$Signal.map(singleton),config.inputs)));
-      var effectsAndModel = A3($Signal.foldp,update,config.init,inputs);
-      var model = A2($Signal.map,$Basics.fst,effectsAndModel);
-      return {html: A2($Signal.map,config.view(address),model)
-             ,model: model
-             ,tasks: A2($Signal.map,function (_p5) {    return A2($Effects.toTask,messages.address,$Basics.snd(_p5));},effectsAndModel)};
-   };
-   var App = F3(function (a,b,c) {    return {html: a,model: b,tasks: c};});
-   var Config = F4(function (a,b,c,d) {    return {init: a,update: b,view: c,inputs: d};});
-   return _elm.StartApp.values = {_op: _op,start: start,Config: Config,App: App};
-};
 Elm.Associations = Elm.Associations || {};
 Elm.Associations.make = function (_elm) {
    "use strict";
@@ -11031,6 +10992,55 @@ Elm.Associations.make = function (_elm) {
    var Association = F2(function (a,b) {    return {number: a,word: b};});
    return _elm.Associations.values = {_op: _op,Association: Association,allAssociations: allAssociations};
 };
+Elm.TimeApp = Elm.TimeApp || {};
+Elm.TimeApp.make = function (_elm) {
+   "use strict";
+   _elm.TimeApp = _elm.TimeApp || {};
+   if (_elm.TimeApp.values) return _elm.TimeApp.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm),
+   $Time = Elm.Time.make(_elm);
+   var _op = {};
+   var start = function (config) {
+      var updateStep = F2(function (_p1,_p0) {
+         var _p2 = _p1;
+         var _p3 = _p0;
+         var _p4 = A3(config.update,_p2._0,_p2._1,_p3._0);
+         var newModel = _p4._0;
+         var additionalEffects = _p4._1;
+         return {ctor: "_Tuple2",_0: newModel,_1: $Effects.batch(_U.list([_p3._1,additionalEffects]))};
+      });
+      var update = F2(function (_p6,_p5) {
+         var _p7 = _p6;
+         var _p8 = _p5;
+         return A3($List.foldl,
+         updateStep,
+         {ctor: "_Tuple2",_0: _p8._0,_1: $Effects.none},
+         A2($List.map,function (a) {    return {ctor: "_Tuple2",_0: a,_1: _p7._0};},_p7._1));
+      });
+      var messages = $Signal.mailbox(_U.list([]));
+      var singleton = function (action) {    return _U.list([action]);};
+      var address = A2($Signal.forwardTo,messages.address,singleton);
+      var inputs = $Signal.mergeMany(A2($List._op["::"],messages.signal,A2($List.map,$Signal.map(singleton),config.inputs)));
+      var inputsWithTime = $Time.timestamp(inputs);
+      var effectsAndModel = A3($Signal.foldp,update,config.init,inputsWithTime);
+      var model = A2($Signal.map,$Basics.fst,effectsAndModel);
+      return {html: A2($Signal.map,config.view(address),model)
+             ,model: model
+             ,tasks: A2($Signal.map,function (_p9) {    return A2($Effects.toTask,messages.address,$Basics.snd(_p9));},effectsAndModel)};
+   };
+   var App = F3(function (a,b,c) {    return {html: a,model: b,tasks: c};});
+   var Config = F4(function (a,b,c,d) {    return {init: a,update: b,view: c,inputs: d};});
+   return _elm.TimeApp.values = {_op: _op,start: start,Config: Config,App: App};
+};
 Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
    "use strict";
@@ -11050,23 +11060,24 @@ Elm.Main.make = function (_elm) {
    $Random = Elm.Random.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp = Elm.StartApp.make(_elm),
    $String = Elm.String.make(_elm),
-   $Task = Elm.Task.make(_elm);
+   $Task = Elm.Task.make(_elm),
+   $Time = Elm.Time.make(_elm),
+   $TimeApp = Elm.TimeApp.make(_elm);
    var _op = {};
-   var shuffle = function (xs) {
-      var seed = $Random.initialSeed(7791);
+   var shuffle = F2(function (xs,seed) {
+      var seed$ = $Random.initialSeed(seed);
       var gen = A2($Random.list,$List.length(xs),A2($Random.$int,0,1000));
-      var _p0 = A2($Random.generate,gen,seed);
+      var _p0 = A2($Random.generate,gen,seed$);
       var rands = _p0._0;
       var zips = A3($List.map2,F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};}),xs,rands);
       var sorted = A2($List.sortBy,$Basics.snd,zips);
       return A2($List.map,$Basics.fst,sorted);
-   };
+   });
    var startGame = function () {
-      var _p1 = shuffle($Associations.allAssociations);
+      var _p1 = A2(shuffle,$Associations.allAssociations,1178);
       if (_p1.ctor === "[]") {
-            return _U.crashCase("Main",{start: {line: 89,column: 3},end: {line: 99,column: 8}},_p1)("No associations!");
+            return _U.crashCase("Main",{start: {line: 90,column: 3},end: {line: 100,column: 8}},_p1)("No associations!");
          } else {
             return {done: _U.list([]),left: _p1._1,current: _p1._0,input: "",time: 0};
          }
@@ -11114,7 +11125,7 @@ Elm.Main.make = function (_elm) {
    var Over = function (a) {    return {ctor: "Over",_0: a};};
    var Paused = function (a) {    return {ctor: "Paused",_0: a};};
    var Running = function (a) {    return {ctor: "Running",_0: a};};
-   var update = F2(function (action,model) {
+   var update = F3(function (action,time,model) {
       var _p6 = {ctor: "_Tuple2",_0: action,_1: model};
       switch (_p6._0.ctor)
       {case "NoOp": return {ctor: "_Tuple2",_0: _p6._1,_1: $Effects.none};
@@ -11149,7 +11160,7 @@ Elm.Main.make = function (_elm) {
    });
    var Initial = {ctor: "Initial"};
    var init = {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
-   var app = $StartApp.start({init: init,inputs: _U.list([]),update: update,view: view});
+   var app = $TimeApp.start({init: init,inputs: _U.list([]),update: update,view: view});
    var main = app.html;
    var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",app.tasks);
    return _elm.Main.values = {_op: _op

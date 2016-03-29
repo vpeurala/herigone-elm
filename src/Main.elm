@@ -8,9 +8,10 @@ import Html.Attributes exposing (autofocus, class, tabindex, value)
 import Html.Events exposing (..)
 import Random exposing (initialSeed, int, generate, list)
 import Signal exposing (Address)
-import StartApp exposing (App, start)
 import String exposing (fromChar, toUpper)
 import Task exposing (Task)
+import Time exposing (Time)
+import TimeApp exposing (App, start)
 import Associations exposing (..)
 
 
@@ -37,17 +38,17 @@ type Action
   | Backspace
 
 
-shuffle : List a -> List a
-shuffle xs =
+shuffle : List a -> Int -> List a
+shuffle xs seed =
   let
     gen =
       list (List.length xs) (int 0 1000)
 
-    seed =
-      initialSeed 7791
+    seed' =
+      initialSeed seed
 
     ( rands, _ ) =
-      generate gen seed
+      generate gen seed'
 
     zips =
       List.map2 (,) xs rands
@@ -86,7 +87,7 @@ keyboard x =
 
 startGame : GameState
 startGame =
-  case (shuffle allAssociations) of
+  case (shuffle allAssociations 1178) of
     [] ->
       Debug.crash "No associations!"
 
@@ -106,8 +107,8 @@ init =
   )
 
 
-update : Action -> Model -> ( Model, Effects Action )
-update action model =
+update : Action -> Time -> Model -> ( Model, Effects Action )
+update action time model =
   case ( action, model ) of
     ( NoOp, model ) ->
       ( model, Effects.none )
