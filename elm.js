@@ -11077,11 +11077,12 @@ Elm.Main.make = function (_elm) {
    var startGame = function () {
       var _p1 = A2(shuffle,$Associations.allAssociations,1178);
       if (_p1.ctor === "[]") {
-            return _U.crashCase("Main",{start: {line: 90,column: 3},end: {line: 100,column: 8}},_p1)("No associations!");
+            return _U.crashCase("Main",{start: {line: 91,column: 3},end: {line: 101,column: 8}},_p1)("No associations!");
          } else {
-            return {done: _U.list([]),left: _p1._1,current: _p1._0,input: "",time: 0};
+            return {done: _U.list([]),left: _p1._1,current: _p1._0,input: "",timer: 0};
          }
    }();
+   var Tick = {ctor: "Tick"};
    var Backspace = {ctor: "Backspace"};
    var Input = function (a) {    return {ctor: "Input",_0: a};};
    var StartOrPause = {ctor: "StartOrPause"};
@@ -11096,6 +11097,23 @@ Elm.Main.make = function (_elm) {
          default: var ch = $Char.fromCode(_p3);
            return $Char.isUpper(ch) ? Input(ch) : NoOp;}
    };
+   var viewRunning = F2(function (address,state) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.div,_U.list([$Html$Attributes.$class("info running")]),_U.list([$Html.text(state.current.number)]))
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.autofocus(true)
+                      ,A4($Html$Events.onWithOptions,
+                      "keydown",
+                      {preventDefault: true,stopPropagation: true},
+                      $Html$Events.keyCode,
+                      function (s) {
+                         return A2($Signal.message,address,keyboard(s));
+                      })
+                      ,$Html$Attributes.value(state.input)]),
+              _U.list([]))
+              ,A2($Html.div,_U.list([]),_U.list([$Html.text($Basics.toString(state.timer))]))]));
+   });
    var viewDiv = F4(function (address,statusText,inputValue,statusClass) {
       return A2($Html.div,
       _U.list([]),
@@ -11116,51 +11134,56 @@ Elm.Main.make = function (_elm) {
       var _p4 = model;
       switch (_p4.ctor)
       {case "Initial": return A4(viewDiv,address,"Paina välilyöntiä aloittaaksesi","","initial");
-         case "Running": var _p5 = _p4._0;
-           return A4(viewDiv,address,_p5.current.number,_p5.input,"running");
+         case "Running": return A2(viewRunning,address,_p4._0);
          case "Paused": return A4(viewDiv,address,"Pysäytetty, paina välilyöntiä jatkaaksesi",_p4._0.input,"paused");
          default: return A4(viewDiv,address,"Peli on loppu, paina välilyöntiä aloittaaksesi uuden",_p4._0.input,"over");}
    });
-   var GameState = F5(function (a,b,c,d,e) {    return {done: a,left: b,current: c,input: d,time: e};});
+   var GameState = F5(function (a,b,c,d,e) {    return {done: a,left: b,current: c,input: d,timer: e};});
    var Over = function (a) {    return {ctor: "Over",_0: a};};
    var Paused = function (a) {    return {ctor: "Paused",_0: a};};
    var Running = function (a) {    return {ctor: "Running",_0: a};};
    var update = F3(function (action,time,model) {
-      var _p6 = {ctor: "_Tuple2",_0: action,_1: model};
-      switch (_p6._0.ctor)
-      {case "NoOp": return {ctor: "_Tuple2",_0: _p6._1,_1: $Effects.none};
-         case "StartOrPause": switch (_p6._1.ctor)
+      var _p5 = {ctor: "_Tuple2",_0: action,_1: model};
+      switch (_p5._0.ctor)
+      {case "NoOp": return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
+         case "StartOrPause": switch (_p5._1.ctor)
            {case "Initial": return {ctor: "_Tuple2",_0: Running(startGame),_1: $Effects.none};
-              case "Running": return {ctor: "_Tuple2",_0: Paused(_p6._1._0),_1: $Effects.none};
-              case "Paused": return {ctor: "_Tuple2",_0: Running(_p6._1._0),_1: $Effects.none};
+              case "Running": return {ctor: "_Tuple2",_0: Paused(_p5._1._0),_1: $Effects.none};
+              case "Paused": return {ctor: "_Tuple2",_0: Running(_p5._1._0),_1: $Effects.none};
               default: return {ctor: "_Tuple2",_0: Running(startGame),_1: $Effects.none};}
-         case "Input": if (_p6._1.ctor === "Running") {
-                 var _p8 = _p6._1._0;
-                 var input$ = A2($Basics._op["++"],_p8.input,$String.fromChar(_p6._0._0));
-                 if (_U.eq($String.toUpper(input$),$String.toUpper(_p8.current.word))) {
-                       var _p7 = _p8.left;
-                       if (_p7.ctor === "[]") {
-                             return {ctor: "_Tuple2",_0: Over(_U.update(_p8,{input: input$})),_1: $Effects.none};
+         case "Input": if (_p5._1.ctor === "Running") {
+                 var _p7 = _p5._1._0;
+                 var input$ = A2($Basics._op["++"],_p7.input,$String.fromChar(_p5._0._0));
+                 if (_U.eq($String.toUpper(input$),$String.toUpper(_p7.current.word))) {
+                       var _p6 = _p7.left;
+                       if (_p6.ctor === "[]") {
+                             return {ctor: "_Tuple2",_0: Over(_U.update(_p7,{input: input$})),_1: $Effects.none};
                           } else {
                              return {ctor: "_Tuple2"
-                                    ,_0: Running(_U.update(_p8,{input: "",current: _p7._0,left: _p7._1,done: A2($List._op["::"],_p8.current,_p8.done)}))
+                                    ,_0: Running(_U.update(_p7,{input: "",current: _p6._0,left: _p6._1,done: A2($List._op["::"],_p7.current,_p7.done)}))
                                     ,_1: $Effects.none};
                           }
-                    } else return {ctor: "_Tuple2",_0: Running(_U.update(_p8,{input: input$})),_1: $Effects.none};
+                    } else return {ctor: "_Tuple2",_0: Running(_U.update(_p7,{input: input$})),_1: $Effects.none};
               } else {
-                 return {ctor: "_Tuple2",_0: _p6._1,_1: $Effects.none};
+                 return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
               }
-         default: if (_p6._1.ctor === "Running") {
-                 var _p9 = _p6._1._0;
-                 var input$ = A3($String.slice,0,-1,_p9.input);
-                 return {ctor: "_Tuple2",_0: Running(_U.update(_p9,{input: input$})),_1: $Effects.none};
+         case "Backspace": if (_p5._1.ctor === "Running") {
+                 var _p8 = _p5._1._0;
+                 var input$ = A3($String.slice,0,-1,_p8.input);
+                 return {ctor: "_Tuple2",_0: Running(_U.update(_p8,{input: input$})),_1: $Effects.none};
               } else {
-                 return {ctor: "_Tuple2",_0: _p6._1,_1: $Effects.none};
+                 return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
+              }
+         default: if (_p5._1.ctor === "Running") {
+                 var _p9 = _p5._1._0;
+                 return {ctor: "_Tuple2",_0: Running(_U.update(_p9,{timer: _p9.timer + 1})),_1: $Effects.none};
+              } else {
+                 return {ctor: "_Tuple2",_0: _p5._1,_1: $Effects.none};
               }}
    });
    var Initial = {ctor: "Initial"};
    var init = {ctor: "_Tuple2",_0: Initial,_1: $Effects.none};
-   var app = $TimeApp.start({init: init,inputs: _U.list([]),update: update,view: view});
+   var app = $TimeApp.start({init: init,inputs: _U.list([A2($Signal.map,function (_p10) {    return Tick;},$Time.fps(24))]),update: update,view: view});
    var main = app.html;
    var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",app.tasks);
    return _elm.Main.values = {_op: _op
@@ -11173,11 +11196,13 @@ Elm.Main.make = function (_elm) {
                              ,StartOrPause: StartOrPause
                              ,Input: Input
                              ,Backspace: Backspace
+                             ,Tick: Tick
                              ,shuffle: shuffle
                              ,keyboard: keyboard
                              ,startGame: startGame
                              ,init: init
                              ,update: update
+                             ,viewRunning: viewRunning
                              ,viewDiv: viewDiv
                              ,view: view
                              ,app: app

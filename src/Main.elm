@@ -27,7 +27,7 @@ type alias GameState =
   , left : List Association
   , current : Association
   , input : String
-  , time : Int
+  , timer : Float
   }
 
 
@@ -36,6 +36,7 @@ type Action
   | StartOrPause
   | Input Char
   | Backspace
+  | Tick
 
 
 shuffle : List a -> Int -> List a
@@ -96,7 +97,7 @@ startGame =
       , left = xs
       , current = x
       , input = ""
-      , time = 0
+      , timer = 0
       }
 
 
@@ -153,6 +154,31 @@ update action time model =
     ( Backspace, model ) ->
       ( model, Effects.none )
 
+    ( Tick, Running state ) ->
+      ( Running { state | timer = state.timer + 1 }, Effects.none )
+
+    ( Tick, model ) ->
+      ( model, Effects.none )
+
+
+viewRunning : Address Action -> GameState -> Html
+viewRunning address state =
+  div
+    []
+    [ div [ class ("info running") ] [ text state.current.number ]
+    , input
+        [ autofocus True
+        , onWithOptions
+            "keydown"
+            { preventDefault = True, stopPropagation = True }
+            keyCode
+            (\s -> Signal.message address (keyboard s))
+        , value state.input
+        ]
+        []
+    , div [] [ text (toString state.timer) ]
+    ]
+
 
 viewDiv : Address Action -> String -> String -> String -> Html
 viewDiv address statusText inputValue statusClass =
@@ -179,7 +205,7 @@ view address model =
       viewDiv address "Paina välilyöntiä aloittaaksesi" "" "initial"
 
     Running state ->
-      viewDiv address state.current.number state.input "running"
+      viewRunning address state
 
     Paused state ->
       viewDiv address "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
@@ -192,7 +218,7 @@ app : App Model
 app =
   start
     { init = init
-    , inputs = []
+    , inputs = [ Signal.map (\_ -> Tick) (Time.fps 24) ]
     , update = update
     , view = view
     }
