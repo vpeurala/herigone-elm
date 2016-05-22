@@ -108,57 +108,64 @@ init =
   )
 
 
+noFx : Model -> ( Model, Effects Action )
+noFx m =
+  ( m, Effects.none )
+
+
 update : Action -> Time -> Model -> ( Model, Effects Action )
 update action time model =
-  case ( action, model ) of
-    ( NoOp, model ) ->
-      ( model, Effects.none )
+  noFx
+    (case ( action, model ) of
+      ( NoOp, model ) ->
+        model
 
-    ( StartOrPause, Initial ) ->
-      ( Running startGame, Effects.none )
+      ( StartOrPause, Initial ) ->
+        Running startGame
 
-    ( StartOrPause, Running state ) ->
-      ( Paused state, Effects.none )
+      ( StartOrPause, Running state ) ->
+        Paused state
 
-    ( StartOrPause, Paused state ) ->
-      ( Running state, Effects.none )
+      ( StartOrPause, Paused state ) ->
+        Running state
 
-    ( StartOrPause, Over state ) ->
-      ( Running startGame, Effects.none )
+      ( StartOrPause, Over state ) ->
+        Running startGame
 
-    ( Input c, Running state ) ->
-      let
-        input' =
-          state.input ++ (String.fromChar c)
-      in
-        if toUpper input' == toUpper state.current.word then
-          case state.left of
-            [] ->
-              ( Over { state | input = input' }, Effects.none )
+      ( Input c, Running state ) ->
+        let
+          input' =
+            state.input ++ (String.fromChar c)
+        in
+          if toUpper input' == toUpper state.current.word then
+            case state.left of
+              [] ->
+                Over { state | input = input' }
 
-            x :: xs ->
-              ( Running { state | input = "", current = x, left = xs, done = state.current :: state.done }, Effects.none )
-        else
-          ( Running { state | input = input' }, Effects.none )
+              x :: xs ->
+                Running { state | input = "", current = x, left = xs, done = state.current :: state.done }
+          else
+            Running { state | input = input' }
 
-    ( Input c, model ) ->
-      ( model, Effects.none )
+      ( Input c, model ) ->
+        model
 
-    ( Backspace, Running state ) ->
-      let
-        input' =
-          String.slice 0 -1 state.input
-      in
-        ( Running { state | input = input' }, Effects.none )
+      ( Backspace, Running state ) ->
+        let
+          input' =
+            String.slice 0 -1 state.input
+        in
+          Running { state | input = input' }
 
-    ( Backspace, model ) ->
-      ( model, Effects.none )
+      ( Backspace, model ) ->
+        model
 
-    ( Tick, Running state ) ->
-      ( Running { state | timer = state.timer + 1 }, Effects.none )
+      ( Tick, Running state ) ->
+        Running { state | timer = state.timer + 1 }
 
-    ( Tick, model ) ->
-      ( model, Effects.none )
+      ( Tick, model ) ->
+        model
+    )
 
 
 viewRunning : Address Action -> GameState -> Html
@@ -214,11 +221,16 @@ view address model =
       viewDiv address "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
 
 
+const : b -> (a -> b)
+const x =
+  \_ -> x
+
+
 app : App Model
 app =
   start
     { init = init
-    , inputs = [ Signal.map (\_ -> Tick) (Time.fps 24) ]
+    , inputs = [ Signal.map (const Tick) (Time.fps 24) ]
     , update = update
     , view = view
     }
