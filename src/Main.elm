@@ -7,16 +7,15 @@ import Html exposing (..)
 import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-
-
--- import Random exposing (initialSeed, int, generate, list)
-
+import Random exposing (initialSeed, int, generate, list)
 import String exposing (fromChar, toUpper)
 
 
 -- import Task exposing (Task)
+-- import Task as Task
 -- import Time exposing (Time)
 -- OS
+-- import Basics.Extra exposing (never)
 
 import List.Nonempty exposing (Nonempty)
 import List.Nonempty as Nonempty
@@ -81,7 +80,12 @@ shuffle xs seed =
 
 getInitialState : Cmd Msg
 getInitialState =
-    Debug.crash "foo"
+    generate (\is -> InitialState is) (Random.map generateInitialModelFromRandomListOfInts (Random.list (Nonempty.length allAssociations) (int 0 1000)))
+
+
+generateInitialModelFromRandomListOfInts : List Int -> Model
+generateInitialModelFromRandomListOfInts rands =
+    Debug.crash "generateInitialModelFromRandomListOfInts"
 
 
 keyboard : Int -> Msg
