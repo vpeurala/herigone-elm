@@ -9306,46 +9306,203 @@ var _user$project$Main$const = F2(
 	function (x, _p0) {
 		return x;
 	});
-var _user$project$Main$decodeKeyCode = _elm_lang$core$Native_Utils.crash(
+var _user$project$Main$shuffle = F2(
+	function (list, $int) {
+		return list;
+	});
+var _user$project$Main$startGame = function () {
+	var _p1 = A2(
+		_user$project$Main$shuffle,
+		_mgold$elm_nonempty_list$List_Nonempty$toList(_user$project$Associations$allAssociations),
+		1178);
+	if (_p1.ctor === '[]') {
+		return _elm_lang$core$Native_Utils.crashCase(
+			'Main',
+			{
+				start: {line: 115, column: 5},
+				end: {line: 125, column: 14}
+			},
+			_p1)('No associations!');
+	} else {
+		return {
+			done: _elm_lang$core$Native_List.fromArray(
+				[]),
+			left: _p1._1,
+			current: _p1._0,
+			input: '',
+			timer: 0
+		};
+	}
+}();
+var _user$project$Main$getInitialState = _elm_lang$core$Native_Utils.crash(
 	'Main',
 	{
-		start: {line: 237, column: 5},
-		end: {line: 237, column: 16}
-	})('decodeKeyCode');
-var _user$project$Main$viewDiv = F3(
-	function (statusText, inputValue, statusClass) {
-		return A2(
-			_elm_lang$html$Html$div,
-			_elm_lang$core$Native_List.fromArray(
-				[]),
-			_elm_lang$core$Native_List.fromArray(
-				[
-					A2(
-					_elm_lang$html$Html$div,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$class(
-							A2(_elm_lang$core$Basics_ops['++'], 'info ', statusClass))
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html$text(statusText)
-						])),
-					A2(
-					_elm_lang$html$Html$input,
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_elm_lang$html$Html_Attributes$autofocus(true),
-							A3(
-							_elm_lang$html$Html_Events$onWithOptions,
-							'keydown',
-							{preventDefault: true, stopPropagation: true},
-							_user$project$Main$decodeKeyCode),
-							_elm_lang$html$Html_Attributes$value(inputValue)
-						]),
-					_elm_lang$core$Native_List.fromArray(
-						[]))
-				]));
+		start: {line: 84, column: 5},
+		end: {line: 84, column: 16}
+	})('foo');
+var _user$project$Main$GameState = F5(
+	function (a, b, c, d, e) {
+		return {done: a, left: b, current: c, input: d, timer: e};
+	});
+var _user$project$Main$Over = function (a) {
+	return {ctor: 'Over', _0: a};
+};
+var _user$project$Main$Paused = function (a) {
+	return {ctor: 'Paused', _0: a};
+};
+var _user$project$Main$Running = function (a) {
+	return {ctor: 'Running', _0: a};
+};
+var _user$project$Main$update = F2(
+	function (action, model) {
+		var _p3 = {ctor: '_Tuple2', _0: action, _1: model};
+		switch (_p3._0.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'StartOrPause':
+				switch (_p3._1.ctor) {
+					case 'Initial':
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Running(_user$project$Main$startGame),
+							_1: _user$project$Main$getInitialState
+						};
+					case 'Running':
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Paused(_p3._1._0),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					case 'Paused':
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Running(_p3._1._0),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					default:
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Running(_user$project$Main$startGame),
+							_1: _user$project$Main$getInitialState
+						};
+				}
+			case 'Input':
+				if (_p3._1.ctor === 'Running') {
+					var _p5 = _p3._1._0;
+					var input$ = A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p5.input,
+						_elm_lang$core$String$fromChar(_p3._0._0));
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$String$toUpper(input$),
+						_elm_lang$core$String$toUpper(_p5.current.word))) {
+						var _p4 = _p5.left;
+						if (_p4.ctor === '[]') {
+							return {
+								ctor: '_Tuple2',
+								_0: _user$project$Main$Over(
+									_elm_lang$core$Native_Utils.update(
+										_p5,
+										{input: input$})),
+								_1: _elm_lang$core$Platform_Cmd$none
+							};
+						} else {
+							return {
+								ctor: '_Tuple2',
+								_0: _user$project$Main$Running(
+									_elm_lang$core$Native_Utils.update(
+										_p5,
+										{
+											input: '',
+											current: _p4._0,
+											left: _p4._1,
+											done: A2(_elm_lang$core$List_ops['::'], _p5.current, _p5.done)
+										})),
+								_1: _elm_lang$core$Platform_Cmd$none
+							};
+						}
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Running(
+								_elm_lang$core$Native_Utils.update(
+									_p5,
+									{input: input$})),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					}
+				} else {
+					return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Backspace':
+				if (_p3._1.ctor === 'Running') {
+					var _p6 = _p3._1._0;
+					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p6.input);
+					return {
+						ctor: '_Tuple2',
+						_0: _user$project$Main$Running(
+							_elm_lang$core$Native_Utils.update(
+								_p6,
+								{input: input$})),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Tick':
+				if (_p3._1.ctor === 'Running') {
+					var _p7 = _p3._1._0;
+					return {
+						ctor: '_Tuple2',
+						_0: _user$project$Main$Running(
+							_elm_lang$core$Native_Utils.update(
+								_p7,
+								{timer: _p7.timer + 1})),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			default:
+				return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+var _user$project$Main$Initial = {ctor: 'Initial'};
+var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$Initial, _1: _elm_lang$core$Platform_Cmd$none};
+var _user$project$Main$InitialState = function (a) {
+	return {ctor: 'InitialState', _0: a};
+};
+var _user$project$Main$Tick = {ctor: 'Tick'};
+var _user$project$Main$Backspace = {ctor: 'Backspace'};
+var _user$project$Main$Input = function (a) {
+	return {ctor: 'Input', _0: a};
+};
+var _user$project$Main$StartOrPause = {ctor: 'StartOrPause'};
+var _user$project$Main$NoOp = {ctor: 'NoOp'};
+var _user$project$Main$keyboard = function (x) {
+	var _p8 = x;
+	switch (_p8) {
+		case 32:
+			return _user$project$Main$StartOrPause;
+		case 8:
+			return _user$project$Main$Backspace;
+		case 222:
+			return _user$project$Main$Input(
+				_elm_lang$core$Native_Utils.chr('Ä'));
+		case 186:
+			return _user$project$Main$Input(
+				_elm_lang$core$Native_Utils.chr('Ö'));
+		default:
+			var ch = _elm_lang$core$Char$fromCode(_p8);
+			return _elm_lang$core$Char$isUpper(ch) ? _user$project$Main$Input(ch) : _user$project$Main$NoOp;
+	}
+};
+var _user$project$Main$decodeKeyCode = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	_elm_lang$core$Json_Decode$int,
+	function (i) {
+		return _elm_lang$core$Json_Decode$succeed(
+			_user$project$Main$keyboard(i));
 	});
 var _user$project$Main$viewRunning = function (state) {
 	return A2(
@@ -9389,220 +9546,64 @@ var _user$project$Main$viewRunning = function (state) {
 					]))
 			]));
 };
+var _user$project$Main$viewDiv = F3(
+	function (statusText, inputValue, statusClass) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class(
+							A2(_elm_lang$core$Basics_ops['++'], 'info ', statusClass))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(statusText)
+						])),
+					A2(
+					_elm_lang$html$Html$input,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$autofocus(true),
+							A3(
+							_elm_lang$html$Html_Events$onWithOptions,
+							'keydown',
+							{preventDefault: true, stopPropagation: true},
+							_user$project$Main$decodeKeyCode),
+							_elm_lang$html$Html_Attributes$value(inputValue)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]));
+	});
 var _user$project$Main$view = function (model) {
-	var _p1 = model;
-	switch (_p1.ctor) {
+	var _p9 = model;
+	switch (_p9.ctor) {
 		case 'Initial':
 			return A3(_user$project$Main$viewDiv, 'Paina välilyöntiä aloittaaksesi', '', 'initial');
 		case 'Running':
-			return _user$project$Main$viewRunning(_p1._0);
+			return _user$project$Main$viewRunning(_p9._0);
 		case 'Paused':
-			return A3(_user$project$Main$viewDiv, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p1._0.input, 'paused');
+			return A3(_user$project$Main$viewDiv, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p9._0.input, 'paused');
 		default:
-			return A3(_user$project$Main$viewDiv, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p1._0.input, 'over');
+			return A3(_user$project$Main$viewDiv, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p9._0.input, 'over');
 	}
 };
-var _user$project$Main$shuffle = F2(
-	function (list, $int) {
-		return list;
-	});
-var _user$project$Main$startGame = function () {
-	var _p2 = A2(
-		_user$project$Main$shuffle,
-		_mgold$elm_nonempty_list$List_Nonempty$toList(_user$project$Associations$allAssociations),
-		1178);
-	if (_p2.ctor === '[]') {
-		return _elm_lang$core$Native_Utils.crashCase(
-			'Main',
-			{
-				start: {line: 115, column: 5},
-				end: {line: 125, column: 14}
-			},
-			_p2)('No associations!');
-	} else {
-		return {
-			done: _elm_lang$core$Native_List.fromArray(
-				[]),
-			left: _p2._1,
-			current: _p2._0,
-			input: '',
-			timer: 0
-		};
-	}
-}();
-var _user$project$Main$getInitialState = _elm_lang$core$Native_Utils.crash(
-	'Main',
-	{
-		start: {line: 84, column: 5},
-		end: {line: 84, column: 16}
-	})('foo');
-var _user$project$Main$GameState = F5(
-	function (a, b, c, d, e) {
-		return {done: a, left: b, current: c, input: d, timer: e};
-	});
-var _user$project$Main$Over = function (a) {
-	return {ctor: 'Over', _0: a};
-};
-var _user$project$Main$Paused = function (a) {
-	return {ctor: 'Paused', _0: a};
-};
-var _user$project$Main$Running = function (a) {
-	return {ctor: 'Running', _0: a};
-};
-var _user$project$Main$update = F2(
-	function (action, model) {
-		var _p4 = {ctor: '_Tuple2', _0: action, _1: model};
-		switch (_p4._0.ctor) {
-			case 'NoOp':
-				return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'StartOrPause':
-				switch (_p4._1.ctor) {
-					case 'Initial':
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_user$project$Main$startGame),
-							_1: _user$project$Main$getInitialState
-						};
-					case 'Running':
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Paused(_p4._1._0),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					case 'Paused':
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_p4._1._0),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					default:
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_user$project$Main$startGame),
-							_1: _user$project$Main$getInitialState
-						};
-				}
-			case 'Input':
-				if (_p4._1.ctor === 'Running') {
-					var _p6 = _p4._1._0;
-					var input$ = A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p6.input,
-						_elm_lang$core$String$fromChar(_p4._0._0));
-					if (_elm_lang$core$Native_Utils.eq(
-						_elm_lang$core$String$toUpper(input$),
-						_elm_lang$core$String$toUpper(_p6.current.word))) {
-						var _p5 = _p6.left;
-						if (_p5.ctor === '[]') {
-							return {
-								ctor: '_Tuple2',
-								_0: _user$project$Main$Over(
-									_elm_lang$core$Native_Utils.update(
-										_p6,
-										{input: input$})),
-								_1: _elm_lang$core$Platform_Cmd$none
-							};
-						} else {
-							return {
-								ctor: '_Tuple2',
-								_0: _user$project$Main$Running(
-									_elm_lang$core$Native_Utils.update(
-										_p6,
-										{
-											input: '',
-											current: _p5._0,
-											left: _p5._1,
-											done: A2(_elm_lang$core$List_ops['::'], _p6.current, _p6.done)
-										})),
-								_1: _elm_lang$core$Platform_Cmd$none
-							};
-						}
-					} else {
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(
-								_elm_lang$core$Native_Utils.update(
-									_p6,
-									{input: input$})),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					}
-				} else {
-					return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'Backspace':
-				if (_p4._1.ctor === 'Running') {
-					var _p7 = _p4._1._0;
-					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p7.input);
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$Running(
-							_elm_lang$core$Native_Utils.update(
-								_p7,
-								{input: input$})),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'Tick':
-				if (_p4._1.ctor === 'Running') {
-					var _p8 = _p4._1._0;
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$Running(
-							_elm_lang$core$Native_Utils.update(
-								_p8,
-								{timer: _p8.timer + 1})),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			default:
-				return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _user$project$Main$Initial = {ctor: 'Initial'};
-var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$Initial, _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
 		{
 			init: _user$project$Main$init,
 			update: _user$project$Main$update,
 			view: _user$project$Main$view,
-			subscriptions: function (_p9) {
+			subscriptions: function (_p10) {
 				return _elm_lang$core$Platform_Sub$none;
 			}
 		})
-};
-var _user$project$Main$InitialState = function (a) {
-	return {ctor: 'InitialState', _0: a};
-};
-var _user$project$Main$Tick = {ctor: 'Tick'};
-var _user$project$Main$Backspace = {ctor: 'Backspace'};
-var _user$project$Main$Input = function (a) {
-	return {ctor: 'Input', _0: a};
-};
-var _user$project$Main$StartOrPause = {ctor: 'StartOrPause'};
-var _user$project$Main$NoOp = {ctor: 'NoOp'};
-var _user$project$Main$keyboard = function (x) {
-	var _p10 = x;
-	switch (_p10) {
-		case 32:
-			return _user$project$Main$StartOrPause;
-		case 8:
-			return _user$project$Main$Backspace;
-		case 222:
-			return _user$project$Main$Input(
-				_elm_lang$core$Native_Utils.chr('Ä'));
-		case 186:
-			return _user$project$Main$Input(
-				_elm_lang$core$Native_Utils.chr('Ö'));
-		default:
-			var ch = _elm_lang$core$Char$fromCode(_p10);
-			return _elm_lang$core$Char$isUpper(ch) ? _user$project$Main$Input(ch) : _user$project$Main$NoOp;
-	}
 };
 
 var Elm = {};

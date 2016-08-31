@@ -234,7 +234,7 @@ viewDiv statusText inputValue statusClass =
 
 decodeKeyCode : Decoder Msg
 decodeKeyCode =
-    Debug.crash "decodeKeyCode"
+    D.int `D.andThen` (\i -> D.succeed (keyboard i))
 
 
 view : Model -> Html Msg
