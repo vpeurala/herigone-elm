@@ -7,11 +7,27 @@ import Html exposing (..)
 import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Random exposing (initialSeed, int, generate, list)
+
+
+-- import Random exposing (initialSeed, int, generate, list)
+
 import String exposing (fromChar, toUpper)
-import Task exposing (Task)
-import Time exposing (Time)
+
+
+-- import Task exposing (Task)
+-- import Time exposing (Time)
+-- OS
+
+import List.Nonempty exposing (Nonempty)
+import List.Nonempty as Nonempty
+
+
+-- Application
+
 import Associations exposing (..)
+
+
+-- Code
 
 
 type Model
@@ -39,6 +55,8 @@ type Msg
     | InitialState Model
 
 
+
+{--
 shuffle : List a -> Int -> List a
 shuffle xs seed =
     let
@@ -58,6 +76,7 @@ shuffle xs seed =
             List.sortBy snd zips
     in
         List.map fst sorted
+--}
 
 
 getInitialState : Cmd Msg
@@ -93,7 +112,7 @@ keyboard x =
 
 startGame : GameState
 startGame =
-    case (shuffle allAssociations 1178) of
+    case (shuffle (Nonempty.toList allAssociations) 1178) of
         [] ->
             Debug.crash "No associations!"
 
@@ -104,6 +123,11 @@ startGame =
             , input = ""
             , timer = 0
             }
+
+
+shuffle : List Association -> Int -> List Association
+shuffle list int =
+    list
 
 
 init : ( Model, Cmd Msg )
@@ -173,6 +197,9 @@ update action model =
         ( Tick, model ) ->
             ( model, Cmd.none )
 
+        ( InitialState _, model ) ->
+            ( model, Cmd.none )
+
 
 viewRunning : GameState -> Html Msg
 viewRunning state =
@@ -231,6 +258,7 @@ const x =
     \_ -> x
 
 
+main : Program Never
 main =
     Html.program
         { init = init
