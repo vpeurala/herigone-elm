@@ -1,6 +1,8 @@
 module Main exposing (..)
 
 import Char exposing (KeyCode, fromCode, isLower, isUpper)
+import Json.Decode exposing (Decoder)
+import Json.Decode as D
 import Html exposing (..)
 import Html.App as Html
 import Html.Attributes exposing (..)
@@ -34,6 +36,7 @@ type Msg
     | Input Char
     | Backspace
     | Tick
+    | InitialState Model
 
 
 shuffle : List a -> Int -> List a
@@ -55,6 +58,11 @@ shuffle xs seed =
             List.sortBy snd zips
     in
         List.map fst sorted
+
+
+getInitialState : Cmd Msg
+getInitialState =
+    Debug.crash "foo"
 
 
 keyboard : Int -> Msg
@@ -109,19 +117,19 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
     case ( action, model ) of
         ( NoOp, model ) ->
-            model
+            ( model, Cmd.none )
 
         ( StartOrPause, Initial ) ->
-            Running startGame
+            ( Running startGame, getInitialState )
 
         ( StartOrPause, Running state ) ->
-            Paused state
+            ( Paused state, Cmd.none )
 
         ( StartOrPause, Paused state ) ->
-            Running state
+            ( Running state, Cmd.none )
 
         ( StartOrPause, Over state ) ->
-            Running startGame
+            ( Running startGame, getInitialState )
 
         ( Input c, Running state ) ->
             let
@@ -131,44 +139,50 @@ update action model =
                 if toUpper input' == toUpper state.current.word then
                     case state.left of
                         [] ->
-                            Over { state | input = input' }
+                            ( Over { state | input = input' }, Cmd.none )
 
                         x :: xs ->
-                            Running { state | input = "", current = x, left = xs, done = state.current :: state.done }
+                            ( Running
+                                { state
+                                    | input = ""
+                                    , current = x
+                                    , left = xs
+                                    , done = state.current :: state.done
+                                }
+                            , Cmd.none
+                            )
                 else
-                    Running { state | input = input' }
+                    ( Running { state | input = input' }, Cmd.none )
 
         ( Input c, model ) ->
-            model
+            ( model, Cmd.none )
 
         ( Backspace, Running state ) ->
             let
                 input' =
                     String.slice 0 -1 state.input
             in
-                Running { state | input = input' }
+                ( Running { state | input = input' }, Cmd.none )
 
         ( Backspace, model ) ->
-            model
+            ( model, Cmd.none )
 
         ( Tick, Running state ) ->
-            Running { state | timer = state.timer + 1 }
+            ( Running { state | timer = state.timer + 1 }, Cmd.none )
 
         ( Tick, model ) ->
-            model
+            ( model, Cmd.none )
 
 
 viewRunning : GameState -> Html Msg
 viewRunning state =
-    div
-        []
+    div []
         [ div [ class ("info running") ] [ text state.current.number ]
         , input
             [ autofocus True
-            , onWithOptions
-                "keydown"
+            , onWithOptions "keydown"
                 { preventDefault = True, stopPropagation = True }
-                keyCode
+                decodeKeyCode
             , value state.input
             ]
             []
@@ -178,19 +192,22 @@ viewRunning state =
 
 viewDiv : String -> String -> String -> Html Msg
 viewDiv statusText inputValue statusClass =
-    div
-        []
+    div []
         [ div [ class ("info " ++ statusClass) ] [ text statusText ]
         , input
             [ autofocus True
-            , onWithOptions
-                "keydown"
+            , onWithOptions "keydown"
                 { preventDefault = True, stopPropagation = True }
-                keyCode
+                decodeKeyCode
             , value inputValue
             ]
             []
         ]
+
+
+decodeKeyCode : Decoder Msg
+decodeKeyCode =
+    Debug.crash "decodeKeyCode"
 
 
 view : Model -> Html Msg
