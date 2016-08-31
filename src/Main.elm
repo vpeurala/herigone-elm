@@ -17,6 +17,7 @@ import String exposing (fromChar, toUpper)
 -- OS
 -- import Basics.Extra exposing (never)
 
+import Keyboard
 import List.Nonempty exposing (Nonempty)
 import List.Nonempty as Nonempty
 
@@ -243,18 +244,20 @@ decodeKeyCode =
 
 view : Model -> Html Msg
 view model =
-    case model of
-        Initial ->
-            viewDiv "Paina välilyöntiä aloittaaksesi" "" "initial"
+    Debug.log ("view, model: " ++ (toString model) ++ "")
+        (case model of
+            Initial ->
+                viewDiv "Paina välilyöntiä aloittaaksesi" "" "initial"
 
-        Running state ->
-            viewRunning state
+            Running state ->
+                viewRunning state
 
-        Paused state ->
-            viewDiv "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
+            Paused state ->
+                viewDiv "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
 
-        Over state ->
-            viewDiv "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
+            Over state ->
+                viewDiv "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
+        )
 
 
 const : b -> (a -> b)
@@ -268,5 +271,10 @@ main =
         { init = init
         , update = update
         , view = view
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Keyboard.ups (\kc -> (keyboard kc))
