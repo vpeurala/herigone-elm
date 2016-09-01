@@ -73,30 +73,6 @@ type Msg
     | InitialState Model
 
 
-
-{--
-shuffle : List a -> Int -> List a
-shuffle xs seed =
-    let
-        gen =
-            Random.list (List.length xs) (int 0 1000)
-
-        seed' =
-            initialSeed seed
-
-        ( rands, _ ) =
-            generate gen seed'
-
-        zips =
-            List.map2 (,) xs rands
-
-        sorted =
-            List.sortBy snd zips
-    in
-        List.map fst sorted
---}
-
-
 nonEmptyRandomListOfInts : Random.Generator (Nonempty Int)
 nonEmptyRandomListOfInts =
     Random.map unsafeNonemptyList (Random.list (Nonempty.length allAssociations) (Random.int 0 1000))
@@ -178,29 +154,6 @@ keyboard x =
                     NoOp
 
 
-startGame : GameState
-startGame =
-    case (shuffle (Nonempty.toList allAssociations) 1178) of
-        [] ->
-            Debug.crash "No associations!"
-
-        x :: xs ->
-            { done = []
-            , left = xs
-            , current = x
-            , input = ""
-            , timer =
-                { currentTime = 0
-                , timeAtStartOfThisAssociation = 0
-                }
-            }
-
-
-shuffle : List Association -> Int -> List Association
-shuffle list int =
-    list
-
-
 init : ( Model, Cmd Msg )
 init =
     ( Initial
@@ -210,83 +163,82 @@ init =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
-    Debug.log "update"
-        (case ( action, model ) of
-            ( NoOp, model ) ->
-                ( model, Cmd.none )
+    (case ( action, model ) of
+        ( NoOp, model ) ->
+            ( model, Cmd.none )
 
-            ( StartOrPause, Initial ) ->
-                ( Running startGame, getInitialState )
+        ( StartOrPause, Initial ) ->
+            ( Initial, getInitialState )
 
-            ( StartOrPause, Running state ) ->
-                ( Paused state, Cmd.none )
+        ( StartOrPause, Running state ) ->
+            ( Paused state, Cmd.none )
 
-            ( StartOrPause, Paused state ) ->
-                ( Running state, Cmd.none )
+        ( StartOrPause, Paused state ) ->
+            ( Running state, Cmd.none )
 
-            ( StartOrPause, Over state ) ->
-                ( Running startGame, getInitialState )
+        ( StartOrPause, Over state ) ->
+            ( Initial, getInitialState )
 
-            ( Input c, Running state ) ->
-                let
-                    input' =
-                        state.input ++ (String.fromChar c)
-                in
-                    if toUpper input' == toUpper state.current.word then
-                        case state.left of
-                            [] ->
-                                ( Over { state | input = input' }, Cmd.none )
+        ( Input c, Running state ) ->
+            let
+                input' =
+                    state.input ++ (String.fromChar c)
+            in
+                if toUpper input' == toUpper state.current.word then
+                    case state.left of
+                        [] ->
+                            ( Over { state | input = input' }, Cmd.none )
 
-                            x :: xs ->
-                                ( Running
-                                    { state
-                                        | input = ""
-                                        , current = x
-                                        , left = xs
-                                        , done =
-                                            { association = state.current
-                                            , duration = (state.timer.currentTime - state.timer.timeAtStartOfThisAssociation)
-                                            }
-                                                :: state.done
-                                        , timer =
-                                            { currentTime = state.timer.currentTime
-                                            , timeAtStartOfThisAssociation = state.timer.currentTime
-                                            }
-                                    }
-                                , Cmd.none
-                                )
-                    else
-                        ( Running { state | input = input' }, Cmd.none )
-
-            ( Input c, model ) ->
-                ( model, Cmd.none )
-
-            ( Backspace, Running state ) ->
-                let
-                    input' =
-                        String.slice 0 -1 state.input
-                in
+                        x :: xs ->
+                            ( Running
+                                { state
+                                    | input = ""
+                                    , current = x
+                                    , left = xs
+                                    , done =
+                                        { association = state.current
+                                        , duration = (state.timer.currentTime - state.timer.timeAtStartOfThisAssociation)
+                                        }
+                                            :: state.done
+                                    , timer =
+                                        { currentTime = state.timer.currentTime
+                                        , timeAtStartOfThisAssociation = state.timer.currentTime
+                                        }
+                                }
+                            , Cmd.none
+                            )
+                else
                     ( Running { state | input = input' }, Cmd.none )
 
-            ( Backspace, model ) ->
-                ( model, Cmd.none )
+        ( Input c, model ) ->
+            ( model, Cmd.none )
 
-            ( Tick time, Running state ) ->
-                let
-                    timer =
-                        state.timer
+        ( Backspace, Running state ) ->
+            let
+                input' =
+                    String.slice 0 -1 state.input
+            in
+                ( Running { state | input = input' }, Cmd.none )
 
-                    timer' =
-                        { timer | currentTime = timer.currentTime + 1 }
-                in
-                    ( Running { state | timer = timer' }, Cmd.none )
+        ( Backspace, model ) ->
+            ( model, Cmd.none )
 
-            ( Tick time, model ) ->
-                ( model, Cmd.none )
+        ( Tick time, Running state ) ->
+            let
+                timer =
+                    state.timer
 
-            ( InitialState newModel, model ) ->
-                ( newModel, Cmd.none )
-        )
+                timer' =
+                    { timer | currentTime = timer.currentTime + 1 }
+            in
+                ( Running { state | timer = timer' }, Cmd.none )
+
+        ( Tick time, model ) ->
+            ( model, Cmd.none )
+
+        ( InitialState newModel, model ) ->
+            ( newModel, Cmd.none )
+    )
 
 
 viewRunning : GameState -> Html Msg
@@ -301,15 +253,33 @@ viewRunning state =
             , value state.input
             ]
             []
-        , div [ class "timer" ] [ text (formatTimer state) ]
+        , case state.done of
+            [] ->
+                div [ style [ ( "display", "none" ) ] ] []
+
+            x :: xs ->
+                div
+                    [ class
+                        ("info running "
+                            ++ x.association.word
+                        )
+                    ]
+                    [ text (x.association.number ++ x.association.word ++ (toString x.duration)) ]
+        , div [ class "timer" ] [ text (formatWholeGameTimer state) ]
+        , div [ class "timer" ] [ text (formatCurrentWordTimer state) ]
         , div [ class "associations-left" ] [ text (toString (List.length state.left) ++ " jäljellä") ]
         , div [ class "debug" ] [ text (toString state) ]
         ]
 
 
-formatTimer : GameState -> String
-formatTimer state =
+formatWholeGameTimer : GameState -> String
+formatWholeGameTimer state =
     print (padLeft 6 '0' (Formatting.roundTo 2)) (state.timer.currentTime / 25) ++ "s"
+
+
+formatCurrentWordTimer : GameState -> String
+formatCurrentWordTimer state =
+    print (padLeft 6 '0' (Formatting.roundTo 2)) ((state.timer.currentTime - state.timer.timeAtStartOfThisAssociation) / 25) ++ "s"
 
 
 viewDiv : GameState -> String -> String -> String -> Html Msg
@@ -324,7 +294,8 @@ viewDiv state statusText inputValue statusClass =
             , value inputValue
             ]
             []
-        , div [ class "timer" ] [ text (formatTimer state) ]
+        , div [ class "timer" ] [ text (formatWholeGameTimer state) ]
+        , div [ class "timer" ] [ text (formatCurrentWordTimer state) ]
         , div [ class "associations-left" ] [ text (toString (List.length state.left) ++ " jäljellä") ]
         , div [ class "debug" ] [ text (toString state) ]
         ]

@@ -9786,7 +9786,20 @@ var _user$project$Main$const = F2(
 	function (x, _p0) {
 		return x;
 	});
-var _user$project$Main$formatTimer = function (state) {
+var _user$project$Main$formatCurrentWordTimer = function (state) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		A2(
+			_krisajenkins$formatting$Formatting$print,
+			A3(
+				_krisajenkins$formatting$Formatting$padLeft,
+				6,
+				_elm_lang$core$Native_Utils.chr('0'),
+				_krisajenkins$formatting$Formatting$roundTo(2)),
+			(state.timer.currentTime - state.timer.timeAtStartOfThisAssociation) / 25),
+		's');
+};
+var _user$project$Main$formatWholeGameTimer = function (state) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		A2(
@@ -9799,56 +9812,28 @@ var _user$project$Main$formatTimer = function (state) {
 			state.timer.currentTime / 25),
 		's');
 };
-var _user$project$Main$shuffle = F2(
-	function (list, $int) {
-		return list;
-	});
-var _user$project$Main$startGame = function () {
-	var _p1 = A2(
-		_user$project$Main$shuffle,
-		_mgold$elm_nonempty_list$List_Nonempty$toList(_user$project$Associations$allAssociations),
-		1178);
+var _user$project$Main$unsafeNonemptyList = function (l) {
+	var _p1 = l;
 	if (_p1.ctor === '[]') {
 		return _elm_lang$core$Native_Utils.crashCase(
 			'Main',
 			{
-				start: {line: 183, column: 5},
-				end: {line: 196, column: 14}
+				start: {line: 83, column: 5},
+				end: {line: 94, column: 14}
 			},
-			_p1)('No associations!');
+			_p1)('unsafeNonemptyList failed, empty list given');
 	} else {
-		return {
-			done: _elm_lang$core$Native_List.fromArray(
-				[]),
-			left: _p1._1,
-			current: _p1._0,
-			input: '',
-			timer: {currentTime: 0, timeAtStartOfThisAssociation: 0}
-		};
-	}
-}();
-var _user$project$Main$unsafeNonemptyList = function (l) {
-	var _p3 = l;
-	if (_p3.ctor === '[]') {
-		return _elm_lang$core$Native_Utils.crashCase(
-			'Main',
-			{
-				start: {line: 107, column: 5},
-				end: {line: 118, column: 14}
-			},
-			_p3)('unsafeNonemptyList failed, empty list given');
-	} else {
-		var _p5 = _mgold$elm_nonempty_list$List_Nonempty$fromList(l);
-		if (_p5.ctor === 'Nothing') {
+		var _p3 = _mgold$elm_nonempty_list$List_Nonempty$fromList(l);
+		if (_p3.ctor === 'Nothing') {
 			return _elm_lang$core$Native_Utils.crashCase(
 				'Main',
 				{
-					start: {line: 112, column: 14},
-					end: {line: 117, column: 22}
+					start: {line: 88, column: 14},
+					end: {line: 93, column: 22}
 				},
-				_p5)('This should be impossible');
+				_p3)('This should be impossible');
 		} else {
-			return _p5._0;
+			return _p3._0;
 		}
 	}
 };
@@ -9916,130 +9901,117 @@ var _user$project$Main$getInitialState = A2(
 	_user$project$Main$nonEmptyRandomListOfInts);
 var _user$project$Main$update = F2(
 	function (action, model) {
-		return A2(
-			_elm_lang$core$Debug$log,
-			'update',
-			function () {
-				var _p7 = {ctor: '_Tuple2', _0: action, _1: model};
-				switch (_p7._0.ctor) {
-					case 'NoOp':
-						return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-					case 'StartOrPause':
-						switch (_p7._1.ctor) {
-							case 'Initial':
-								return {
-									ctor: '_Tuple2',
-									_0: _user$project$Main$Running(_user$project$Main$startGame),
-									_1: _user$project$Main$getInitialState
-								};
-							case 'Running':
-								return {
-									ctor: '_Tuple2',
-									_0: _user$project$Main$Paused(_p7._1._0),
-									_1: _elm_lang$core$Platform_Cmd$none
-								};
-							case 'Paused':
-								return {
-									ctor: '_Tuple2',
-									_0: _user$project$Main$Running(_p7._1._0),
-									_1: _elm_lang$core$Platform_Cmd$none
-								};
-							default:
-								return {
-									ctor: '_Tuple2',
-									_0: _user$project$Main$Running(_user$project$Main$startGame),
-									_1: _user$project$Main$getInitialState
-								};
-						}
-					case 'Input':
-						if (_p7._1.ctor === 'Running') {
-							var _p9 = _p7._1._0;
-							var input$ = A2(
-								_elm_lang$core$Basics_ops['++'],
-								_p9.input,
-								_elm_lang$core$String$fromChar(_p7._0._0));
-							if (_elm_lang$core$Native_Utils.eq(
-								_elm_lang$core$String$toUpper(input$),
-								_elm_lang$core$String$toUpper(_p9.current.word))) {
-								var _p8 = _p9.left;
-								if (_p8.ctor === '[]') {
-									return {
-										ctor: '_Tuple2',
-										_0: _user$project$Main$Over(
-											_elm_lang$core$Native_Utils.update(
-												_p9,
-												{input: input$})),
-										_1: _elm_lang$core$Platform_Cmd$none
-									};
-								} else {
-									return {
-										ctor: '_Tuple2',
-										_0: _user$project$Main$Running(
-											_elm_lang$core$Native_Utils.update(
-												_p9,
-												{
-													input: '',
-													current: _p8._0,
-													left: _p8._1,
-													done: A2(
-														_elm_lang$core$List_ops['::'],
-														{association: _p9.current, duration: _p9.timer.currentTime - _p9.timer.timeAtStartOfThisAssociation},
-														_p9.done),
-													timer: {currentTime: _p9.timer.currentTime, timeAtStartOfThisAssociation: _p9.timer.currentTime}
-												})),
-										_1: _elm_lang$core$Platform_Cmd$none
-									};
-								}
-							} else {
-								return {
-									ctor: '_Tuple2',
-									_0: _user$project$Main$Running(
-										_elm_lang$core$Native_Utils.update(
-											_p9,
-											{input: input$})),
-									_1: _elm_lang$core$Platform_Cmd$none
-								};
-							}
-						} else {
-							return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-						}
-					case 'Backspace':
-						if (_p7._1.ctor === 'Running') {
-							var _p10 = _p7._1._0;
-							var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p10.input);
+		var _p5 = {ctor: '_Tuple2', _0: action, _1: model};
+		switch (_p5._0.ctor) {
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'StartOrPause':
+				switch (_p5._1.ctor) {
+					case 'Initial':
+						return {ctor: '_Tuple2', _0: _user$project$Main$Initial, _1: _user$project$Main$getInitialState};
+					case 'Running':
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Paused(_p5._1._0),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					case 'Paused':
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Running(_p5._1._0),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					default:
+						return {ctor: '_Tuple2', _0: _user$project$Main$Initial, _1: _user$project$Main$getInitialState};
+				}
+			case 'Input':
+				if (_p5._1.ctor === 'Running') {
+					var _p7 = _p5._1._0;
+					var input$ = A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p7.input,
+						_elm_lang$core$String$fromChar(_p5._0._0));
+					if (_elm_lang$core$Native_Utils.eq(
+						_elm_lang$core$String$toUpper(input$),
+						_elm_lang$core$String$toUpper(_p7.current.word))) {
+						var _p6 = _p7.left;
+						if (_p6.ctor === '[]') {
 							return {
 								ctor: '_Tuple2',
-								_0: _user$project$Main$Running(
+								_0: _user$project$Main$Over(
 									_elm_lang$core$Native_Utils.update(
-										_p10,
+										_p7,
 										{input: input$})),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
 						} else {
-							return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-						}
-					case 'Tick':
-						if (_p7._1.ctor === 'Running') {
-							var _p11 = _p7._1._0;
-							var timer = _p11.timer;
-							var timer$ = _elm_lang$core$Native_Utils.update(
-								timer,
-								{currentTime: timer.currentTime + 1});
 							return {
 								ctor: '_Tuple2',
 								_0: _user$project$Main$Running(
 									_elm_lang$core$Native_Utils.update(
-										_p11,
-										{timer: timer$})),
+										_p7,
+										{
+											input: '',
+											current: _p6._0,
+											left: _p6._1,
+											done: A2(
+												_elm_lang$core$List_ops['::'],
+												{association: _p7.current, duration: _p7.timer.currentTime - _p7.timer.timeAtStartOfThisAssociation},
+												_p7.done),
+											timer: {currentTime: _p7.timer.currentTime, timeAtStartOfThisAssociation: _p7.timer.currentTime}
+										})),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
-						} else {
-							return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
 						}
-					default:
-						return {ctor: '_Tuple2', _0: _p7._0._0, _1: _elm_lang$core$Platform_Cmd$none};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$Running(
+								_elm_lang$core$Native_Utils.update(
+									_p7,
+									{input: input$})),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					}
+				} else {
+					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
 				}
-			}());
+			case 'Backspace':
+				if (_p5._1.ctor === 'Running') {
+					var _p8 = _p5._1._0;
+					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p8.input);
+					return {
+						ctor: '_Tuple2',
+						_0: _user$project$Main$Running(
+							_elm_lang$core$Native_Utils.update(
+								_p8,
+								{input: input$})),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Tick':
+				if (_p5._1.ctor === 'Running') {
+					var _p9 = _p5._1._0;
+					var timer = _p9.timer;
+					var timer$ = _elm_lang$core$Native_Utils.update(
+						timer,
+						{currentTime: timer.currentTime + 1});
+					return {
+						ctor: '_Tuple2',
+						_0: _user$project$Main$Running(
+							_elm_lang$core$Native_Utils.update(
+								_p9,
+								{timer: timer$})),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			default:
+				return {ctor: '_Tuple2', _0: _p5._0._0, _1: _elm_lang$core$Platform_Cmd$none};
+		}
 	});
 var _user$project$Main$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
@@ -10051,8 +10023,8 @@ var _user$project$Main$Input = function (a) {
 var _user$project$Main$StartOrPause = {ctor: 'StartOrPause'};
 var _user$project$Main$NoOp = {ctor: 'NoOp'};
 var _user$project$Main$keyboard = function (x) {
-	var _p12 = x;
-	switch (_p12) {
+	var _p10 = x;
+	switch (_p10) {
 		case 32:
 			return _user$project$Main$StartOrPause;
 		case 8:
@@ -10064,7 +10036,7 @@ var _user$project$Main$keyboard = function (x) {
 			return _user$project$Main$Input(
 				_elm_lang$core$Native_Utils.chr('Ö'));
 		default:
-			var ch = _elm_lang$core$Char$fromCode(_p12);
+			var ch = _elm_lang$core$Char$fromCode(_p10);
 			return _elm_lang$core$Char$isUpper(ch) ? _user$project$Main$Input(ch) : _user$project$Main$NoOp;
 	}
 };
@@ -10108,6 +10080,43 @@ var _user$project$Main$viewRunning = function (state) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
+				function () {
+				var _p11 = state.done;
+				if (_p11.ctor === '[]') {
+					return A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$style(
+								_elm_lang$core$Native_List.fromArray(
+									[
+										{ctor: '_Tuple2', _0: 'display', _1: 'none'}
+									]))
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[]));
+				} else {
+					var _p12 = _p11._0;
+					return A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class(
+								A2(_elm_lang$core$Basics_ops['++'], 'info running ', _p12.association.word))
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_p12.association.number,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_p12.association.word,
+										_elm_lang$core$Basics$toString(_p12.duration))))
+							]));
+				}
+			}(),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
@@ -10117,7 +10126,18 @@ var _user$project$Main$viewRunning = function (state) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text(
-						_user$project$Main$formatTimer(state))
+						_user$project$Main$formatWholeGameTimer(state))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('timer')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_user$project$Main$formatCurrentWordTimer(state))
 					])),
 				A2(
 				_elm_lang$html$Html$div,
@@ -10191,7 +10211,18 @@ var _user$project$Main$viewDiv = F4(
 					_elm_lang$core$Native_List.fromArray(
 						[
 							_elm_lang$html$Html$text(
-							_user$project$Main$formatTimer(state))
+							_user$project$Main$formatWholeGameTimer(state))
+						])),
+					A2(
+					_elm_lang$html$Html$div,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('timer')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text(
+							_user$project$Main$formatCurrentWordTimer(state))
 						])),
 					A2(
 					_elm_lang$html$Html$div,

@@ -49,4 +49,5 @@ body {
 input {
   font-size: 60px;
   font-family: monospace;
+  text-align: center;
 }
