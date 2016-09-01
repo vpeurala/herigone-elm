@@ -14,7 +14,11 @@ import String exposing (fromChar, toUpper)
 -- import Task
 -- import Task exposing (Task)
 -- import Task as Task
--- import Time exposing (Time)
+
+import Time exposing (Time)
+import Time
+
+
 -- OS
 -- import Basics.Extra exposing (never)
 
@@ -52,7 +56,7 @@ type Msg
     | StartOrPause
     | Input Char
     | Backspace
-    | Tick
+    | Tick Time
     | InitialState Model
 
 
@@ -240,10 +244,10 @@ update action model =
             ( Backspace, model ) ->
                 ( model, Cmd.none )
 
-            ( Tick, Running state ) ->
+            ( Tick time, Running state ) ->
                 ( Running { state | timer = state.timer + 1 }, Cmd.none )
 
-            ( Tick, model ) ->
+            ( Tick time, model ) ->
                 ( model, Cmd.none )
 
             ( InitialState newModel, model ) ->
@@ -323,4 +327,7 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Keyboard.downs (\kc -> (keyboard kc))
+    Sub.batch
+        [ Keyboard.downs (\kc -> (keyboard kc))
+        , Time.every Time.second Tick
+        ]

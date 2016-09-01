@@ -9671,8 +9671,8 @@ var _user$project$Main$startGame = function () {
 		return _elm_lang$core$Native_Utils.crashCase(
 			'Main',
 			{
-				start: {line: 163, column: 5},
-				end: {line: 173, column: 14}
+				start: {line: 167, column: 5},
+				end: {line: 177, column: 14}
 			},
 			_p1)('No associations!');
 	} else {
@@ -9692,8 +9692,8 @@ var _user$project$Main$unsafeNonemptyList = function (l) {
 		return _elm_lang$core$Native_Utils.crashCase(
 			'Main',
 			{
-				start: {line: 90, column: 5},
-				end: {line: 101, column: 14}
+				start: {line: 94, column: 5},
+				end: {line: 105, column: 14}
 			},
 			_p3)('unsafeNonemptyList failed, empty list given');
 	} else {
@@ -9702,8 +9702,8 @@ var _user$project$Main$unsafeNonemptyList = function (l) {
 			return _elm_lang$core$Native_Utils.crashCase(
 				'Main',
 				{
-					start: {line: 95, column: 14},
-					end: {line: 100, column: 22}
+					start: {line: 99, column: 14},
+					end: {line: 104, column: 22}
 				},
 				_p5)('This should be impossible');
 		} else {
@@ -9884,7 +9884,9 @@ var _user$project$Main$update = F2(
 				}
 			}());
 	});
-var _user$project$Main$Tick = {ctor: 'Tick'};
+var _user$project$Main$Tick = function (a) {
+	return {ctor: 'Tick', _0: a};
+};
 var _user$project$Main$Backspace = {ctor: 'Backspace'};
 var _user$project$Main$Input = function (a) {
 	return {ctor: 'Input', _0: a};
@@ -10038,10 +10040,15 @@ var _user$project$Main$view = function (model) {
 	}
 };
 var _user$project$Main$subscriptions = function (model) {
-	return _elm_lang$keyboard$Keyboard$downs(
-		function (kc) {
-			return _user$project$Main$keyboard(kc);
-		});
+	return _elm_lang$core$Platform_Sub$batch(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$keyboard$Keyboard$downs(
+				function (kc) {
+					return _user$project$Main$keyboard(kc);
+				}),
+				A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second, _user$project$Main$Tick)
+			]));
 };
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
