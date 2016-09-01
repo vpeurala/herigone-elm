@@ -11,6 +11,7 @@ import Random exposing (Generator(..), initialSeed, int, generate, list)
 import String exposing (fromChar, toUpper)
 
 
+-- import Task
 -- import Task exposing (Task)
 -- import Task as Task
 -- import Time exposing (Time)
@@ -79,22 +80,56 @@ shuffle xs seed =
 --}
 
 
+nonEmptyRandomListOfInts : Random.Generator (Nonempty Int)
+nonEmptyRandomListOfInts =
+    Random.map unsafeNonemptyList (Random.list (Nonempty.length allAssociations) (int 0 1000))
+
+
+unsafeNonemptyList : List a -> Nonempty a
+unsafeNonemptyList l =
+    case l of
+        [] ->
+            Debug.crash "unsafeNonemptyList failed, empty list given"
+
+        _ ->
+            (case (Nonempty.fromList l) of
+                Nothing ->
+                    Debug.crash "This should be impossible"
+
+                Just x ->
+                    x
+            )
+
+
+randomModel : Random.Generator Model
+randomModel =
+    Random.map generateInitialModelFromRandomListOfInts nonEmptyRandomListOfInts
+
+
 getInitialState : Cmd Msg
 getInitialState =
-    generate (\is -> InitialState is)
-        (Random.map generateInitialModelFromRandomListOfInts
-            (case
-                (Random.map Nonempty.fromList (Random.list (Nonempty.length allAssociations) (int 0 1000)))
-             of
-                _ ->
-                    Debug.crash "This is impossible."
-            )
-        )
+    Random.generate (\ns -> InitialState (generateInitialModelFromRandomListOfInts ns)) nonEmptyRandomListOfInts
 
 
 generateInitialModelFromRandomListOfInts : Nonempty Int -> Model
 generateInitialModelFromRandomListOfInts rands =
-    Debug.crash "generateInitialModelFromRandomListOfInts"
+    let
+        zips =
+            Nonempty.map2 (,) allAssociations rands
+
+        sorted =
+            Nonempty.sortBy snd zips
+
+        allAssociationsInRandomOrder =
+            Nonempty.map fst sorted
+    in
+        Running
+            { current = Nonempty.head allAssociationsInRandomOrder
+            , done = []
+            , input = ""
+            , left = Nonempty.tail allAssociationsInRandomOrder
+            , timer = 0
+            }
 
 
 keyboard : Int -> Msg
