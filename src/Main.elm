@@ -22,6 +22,7 @@ import Time
 -- OS
 -- import Basics.Extra exposing (never)
 
+import Formatting exposing (..)
 import Keyboard
 import List.Nonempty exposing (Nonempty)
 import List.Nonempty as Nonempty
@@ -43,11 +44,23 @@ type Model
 
 
 type alias GameState =
-    { done : List Association
+    { done : List AssociationWithTime
     , left : List Association
     , current : Association
     , input : String
-    , timer : Float
+    , timer : Timer
+    }
+
+
+type alias AssociationWithTime =
+    { association : Association
+    , duration : Time
+    }
+
+
+type alias Timer =
+    { currentTime : Time
+    , timeAtStartOfThisAssociation : Time
     }
 
 
@@ -86,7 +99,7 @@ shuffle xs seed =
 
 nonEmptyRandomListOfInts : Random.Generator (Nonempty Int)
 nonEmptyRandomListOfInts =
-    Random.map unsafeNonemptyList (Random.list (Nonempty.length allAssociations) (int 0 1000))
+    Random.map unsafeNonemptyList (Random.list (Nonempty.length allAssociations) (Random.int 0 1000))
 
 
 unsafeNonemptyList : List a -> Nonempty a
@@ -132,7 +145,10 @@ generateInitialModelFromRandomListOfInts rands =
             , done = []
             , input = ""
             , left = Nonempty.tail allAssociationsInRandomOrder
-            , timer = 0
+            , timer =
+                { currentTime = 0
+                , timeAtStartOfThisAssociation = 0
+                }
             }
 
 
@@ -173,7 +189,10 @@ startGame =
             , left = xs
             , current = x
             , input = ""
-            , timer = 0
+            , timer =
+                { currentTime = 0
+                , timeAtStartOfThisAssociation = 0
+                }
             }
 
 
@@ -224,7 +243,15 @@ update action model =
                                         | input = ""
                                         , current = x
                                         , left = xs
-                                        , done = state.current :: state.done
+                                        , done =
+                                            { association = state.current
+                                            , duration = (state.timer.currentTime - state.timer.timeAtStartOfThisAssociation)
+                                            }
+                                                :: state.done
+                                        , timer =
+                                            { currentTime = state.timer.currentTime
+                                            , timeAtStartOfThisAssociation = state.timer.currentTime
+                                            }
                                     }
                                 , Cmd.none
                                 )
@@ -245,7 +272,14 @@ update action model =
                 ( model, Cmd.none )
 
             ( Tick time, Running state ) ->
-                ( Running { state | timer = state.timer + 1 }, Cmd.none )
+                let
+                    timer =
+                        state.timer
+
+                    timer' =
+                        { timer | currentTime = timer.currentTime + 1 }
+                in
+                    ( Running { state | timer = timer' }, Cmd.none )
 
             ( Tick time, model ) ->
                 ( model, Cmd.none )
@@ -267,14 +301,19 @@ viewRunning state =
             , value state.input
             ]
             []
-        , div [ class "timer" ] [ text (toString state.timer ++ " s") ]
+        , div [ class "timer" ] [ text (formatTimer state) ]
         , div [ class "associations-left" ] [ text (toString (List.length state.left) ++ " jäljellä") ]
         , div [ class "debug" ] [ text (toString state) ]
         ]
 
 
-viewDiv : String -> String -> String -> Html Msg
-viewDiv statusText inputValue statusClass =
+formatTimer : GameState -> String
+formatTimer state =
+    print (padLeft 6 '0' (Formatting.roundTo 2)) (state.timer.currentTime / 25) ++ "s"
+
+
+viewDiv : GameState -> String -> String -> String -> Html Msg
+viewDiv state statusText inputValue statusClass =
     div []
         [ div [ class ("info " ++ statusClass) ] [ text statusText ]
         , input
@@ -283,6 +322,24 @@ viewDiv statusText inputValue statusClass =
                 { preventDefault = True, stopPropagation = True }
                 decodeKeyCode
             , value inputValue
+            ]
+            []
+        , div [ class "timer" ] [ text (formatTimer state) ]
+        , div [ class "associations-left" ] [ text (toString (List.length state.left) ++ " jäljellä") ]
+        , div [ class "debug" ] [ text (toString state) ]
+        ]
+
+
+viewInitial : Html Msg
+viewInitial =
+    div []
+        [ div [ class "info initial" ] [ text "Paina välilyöntiä aloittaaksesi" ]
+        , input
+            [ autofocus True
+            , onWithOptions "keydown"
+                { preventDefault = True, stopPropagation = True }
+                decodeKeyCode
+            , value ""
             ]
             []
         ]
@@ -297,16 +354,16 @@ view : Model -> Html Msg
 view model =
     (case model of
         Initial ->
-            viewDiv "Paina välilyöntiä aloittaaksesi" "" "initial"
+            viewInitial
 
         Running state ->
             viewRunning state
 
         Paused state ->
-            viewDiv "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
+            viewDiv state "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
 
         Over state ->
-            viewDiv "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
+            viewDiv state "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
     )
 
 
@@ -329,5 +386,5 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ Keyboard.downs (\kc -> (keyboard kc))
-        , Time.every Time.second Tick
+        , Time.every (40 * Time.millisecond) Tick
         ]
