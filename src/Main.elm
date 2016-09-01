@@ -7,7 +7,7 @@ import Html exposing (..)
 import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Random exposing (initialSeed, int, generate, list)
+import Random exposing (Generator(..), initialSeed, int, generate, list)
 import String exposing (fromChar, toUpper)
 
 
@@ -81,10 +81,18 @@ shuffle xs seed =
 
 getInitialState : Cmd Msg
 getInitialState =
-    generate (\is -> InitialState is) (Random.map generateInitialModelFromRandomListOfInts (Random.list (Nonempty.length allAssociations) (int 0 1000)))
+    generate (\is -> InitialState is)
+        (Random.map generateInitialModelFromRandomListOfInts
+            (case
+                (Random.map Nonempty.fromList (Random.list (Nonempty.length allAssociations) (int 0 1000)))
+             of
+                _ ->
+                    Debug.crash "This is impossible."
+            )
+        )
 
 
-generateInitialModelFromRandomListOfInts : List Int -> Model
+generateInitialModelFromRandomListOfInts : Nonempty Int -> Model
 generateInitialModelFromRandomListOfInts rands =
     Debug.crash "generateInitialModelFromRandomListOfInts"
 

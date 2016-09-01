@@ -9671,8 +9671,8 @@ var _user$project$Main$startGame = function () {
 		return _elm_lang$core$Native_Utils.crashCase(
 			'Main',
 			{
-				start: {line: 120, column: 5},
-				end: {line: 130, column: 14}
+				start: {line: 128, column: 5},
+				end: {line: 138, column: 14}
 			},
 			_p1)('No associations!');
 	} else {
@@ -9690,8 +9690,8 @@ var _user$project$Main$generateInitialModelFromRandomListOfInts = function (rand
 	return _elm_lang$core$Native_Utils.crash(
 		'Main',
 		{
-			start: {line: 89, column: 5},
-			end: {line: 89, column: 16}
+			start: {line: 97, column: 5},
+			end: {line: 97, column: 16}
 		})('generateInitialModelFromRandomListOfInts');
 };
 var _user$project$Main$GameState = F5(
@@ -9720,18 +9720,30 @@ var _user$project$Main$getInitialState = A2(
 	A2(
 		_elm_lang$core$Random$map,
 		_user$project$Main$generateInitialModelFromRandomListOfInts,
-		A2(
-			_elm_lang$core$Random$list,
-			_mgold$elm_nonempty_list$List_Nonempty$length(_user$project$Associations$allAssociations),
-			A2(_elm_lang$core$Random$int, 0, 1000))));
+		function () {
+			var _p3 = A2(
+				_elm_lang$core$Random$map,
+				_mgold$elm_nonempty_list$List_Nonempty$fromList,
+				A2(
+					_elm_lang$core$Random$list,
+					_mgold$elm_nonempty_list$List_Nonempty$length(_user$project$Associations$allAssociations),
+					A2(_elm_lang$core$Random$int, 0, 1000)));
+			return _elm_lang$core$Native_Utils.crashCase(
+				'Main',
+				{
+					start: {line: 86, column: 14},
+					end: {line: 90, column: 54}
+				},
+				_p3)('This is impossible.');
+		}()));
 var _user$project$Main$update = F2(
 	function (action, model) {
-		var _p3 = {ctor: '_Tuple2', _0: action, _1: model};
-		switch (_p3._0.ctor) {
+		var _p5 = {ctor: '_Tuple2', _0: action, _1: model};
+		switch (_p5._0.ctor) {
 			case 'NoOp':
-				return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+				return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'StartOrPause':
-				switch (_p3._1.ctor) {
+				switch (_p5._1.ctor) {
 					case 'Initial':
 						return {
 							ctor: '_Tuple2',
@@ -9741,13 +9753,13 @@ var _user$project$Main$update = F2(
 					case 'Running':
 						return {
 							ctor: '_Tuple2',
-							_0: _user$project$Main$Paused(_p3._1._0),
+							_0: _user$project$Main$Paused(_p5._1._0),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					case 'Paused':
 						return {
 							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_p3._1._0),
+							_0: _user$project$Main$Running(_p5._1._0),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					default:
@@ -9758,22 +9770,22 @@ var _user$project$Main$update = F2(
 						};
 				}
 			case 'Input':
-				if (_p3._1.ctor === 'Running') {
-					var _p5 = _p3._1._0;
+				if (_p5._1.ctor === 'Running') {
+					var _p7 = _p5._1._0;
 					var input$ = A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p5.input,
-						_elm_lang$core$String$fromChar(_p3._0._0));
+						_p7.input,
+						_elm_lang$core$String$fromChar(_p5._0._0));
 					if (_elm_lang$core$Native_Utils.eq(
 						_elm_lang$core$String$toUpper(input$),
-						_elm_lang$core$String$toUpper(_p5.current.word))) {
-						var _p4 = _p5.left;
-						if (_p4.ctor === '[]') {
+						_elm_lang$core$String$toUpper(_p7.current.word))) {
+						var _p6 = _p7.left;
+						if (_p6.ctor === '[]') {
 							return {
 								ctor: '_Tuple2',
 								_0: _user$project$Main$Over(
 									_elm_lang$core$Native_Utils.update(
-										_p5,
+										_p7,
 										{input: input$})),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
@@ -9782,12 +9794,12 @@ var _user$project$Main$update = F2(
 								ctor: '_Tuple2',
 								_0: _user$project$Main$Running(
 									_elm_lang$core$Native_Utils.update(
-										_p5,
+										_p7,
 										{
 											input: '',
-											current: _p4._0,
-											left: _p4._1,
-											done: A2(_elm_lang$core$List_ops['::'], _p5.current, _p5.done)
+											current: _p6._0,
+											left: _p6._1,
+											done: A2(_elm_lang$core$List_ops['::'], _p7.current, _p7.done)
 										})),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
@@ -9797,45 +9809,45 @@ var _user$project$Main$update = F2(
 							ctor: '_Tuple2',
 							_0: _user$project$Main$Running(
 								_elm_lang$core$Native_Utils.update(
-									_p5,
+									_p7,
 									{input: input$})),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					}
 				} else {
-					return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'Backspace':
-				if (_p3._1.ctor === 'Running') {
-					var _p6 = _p3._1._0;
-					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p6.input);
+				if (_p5._1.ctor === 'Running') {
+					var _p8 = _p5._1._0;
+					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p8.input);
 					return {
 						ctor: '_Tuple2',
 						_0: _user$project$Main$Running(
 							_elm_lang$core$Native_Utils.update(
-								_p6,
+								_p8,
 								{input: input$})),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'Tick':
-				if (_p3._1.ctor === 'Running') {
-					var _p7 = _p3._1._0;
+				if (_p5._1.ctor === 'Running') {
+					var _p9 = _p5._1._0;
 					return {
 						ctor: '_Tuple2',
 						_0: _user$project$Main$Running(
 							_elm_lang$core$Native_Utils.update(
-								_p7,
-								{timer: _p7.timer + 1})),
+								_p9,
+								{timer: _p9.timer + 1})),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			default:
-				return {ctor: '_Tuple2', _0: _p3._1, _1: _elm_lang$core$Platform_Cmd$none};
+				return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _user$project$Main$Tick = {ctor: 'Tick'};
@@ -9846,8 +9858,8 @@ var _user$project$Main$Input = function (a) {
 var _user$project$Main$StartOrPause = {ctor: 'StartOrPause'};
 var _user$project$Main$NoOp = {ctor: 'NoOp'};
 var _user$project$Main$keyboard = function (x) {
-	var _p8 = x;
-	switch (_p8) {
+	var _p10 = x;
+	switch (_p10) {
 		case 32:
 			return _user$project$Main$StartOrPause;
 		case 8:
@@ -9859,7 +9871,7 @@ var _user$project$Main$keyboard = function (x) {
 			return _user$project$Main$Input(
 				_elm_lang$core$Native_Utils.chr('Ö'));
 		default:
-			var ch = _elm_lang$core$Char$fromCode(_p8);
+			var ch = _elm_lang$core$Char$fromCode(_p10);
 			return _elm_lang$core$Char$isUpper(ch) ? _user$project$Main$Input(ch) : _user$project$Main$NoOp;
 	}
 };
@@ -9958,16 +9970,16 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$core$Basics$toString(model),
 				'')),
 		function () {
-			var _p9 = model;
-			switch (_p9.ctor) {
+			var _p11 = model;
+			switch (_p11.ctor) {
 				case 'Initial':
 					return A3(_user$project$Main$viewDiv, 'Paina välilyöntiä aloittaaksesi', '', 'initial');
 				case 'Running':
-					return _user$project$Main$viewRunning(_p9._0);
+					return _user$project$Main$viewRunning(_p11._0);
 				case 'Paused':
-					return A3(_user$project$Main$viewDiv, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p9._0.input, 'paused');
+					return A3(_user$project$Main$viewDiv, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p11._0.input, 'paused');
 				default:
-					return A3(_user$project$Main$viewDiv, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p9._0.input, 'over');
+					return A3(_user$project$Main$viewDiv, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p11._0.input, 'over');
 			}
 		}());
 };
