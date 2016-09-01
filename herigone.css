@@ -1,5 +1,11 @@
 body {
   background-color: #a2af15;
+  font-family: monospace;
+}
+
+.game {
+  text-align: center;
+  vertical-align: middle;
 }
 
 .info {
@@ -35,7 +41,12 @@ body {
 .associations-left {
   text-align: center;
   font-size: 60px;
-  font-family: fantasy;
+  font-family: monospace;
   background-color: lightblue;
   color: white;
+}
+
+input {
+  font-size: 60px;
+  font-family: monospace;
 }

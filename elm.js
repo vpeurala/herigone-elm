@@ -10079,7 +10079,9 @@ var _user$project$Main$viewRunning = function (state) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('game')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -10150,7 +10152,9 @@ var _user$project$Main$viewDiv = F4(
 		return A2(
 			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(
-				[]),
+				[
+					_elm_lang$html$Html_Attributes$class('game')
+				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
 					A2(
@@ -10220,7 +10224,9 @@ var _user$project$Main$viewDiv = F4(
 var _user$project$Main$viewInitial = A2(
 	_elm_lang$html$Html$div,
 	_elm_lang$core$Native_List.fromArray(
-		[]),
+		[
+			_elm_lang$html$Html_Attributes$class('game')
+		]),
 	_elm_lang$core$Native_List.fromArray(
 		[
 			A2(

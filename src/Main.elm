@@ -291,7 +291,7 @@ update action model =
 
 viewRunning : GameState -> Html Msg
 viewRunning state =
-    div []
+    div [ class "game" ]
         [ div [ class ("info running") ] [ text state.current.number ]
         , input
             [ autofocus True
@@ -314,7 +314,7 @@ formatTimer state =
 
 viewDiv : GameState -> String -> String -> String -> Html Msg
 viewDiv state statusText inputValue statusClass =
-    div []
+    div [ class "game" ]
         [ div [ class ("info " ++ statusClass) ] [ text statusText ]
         , input
             [ autofocus True
@@ -332,7 +332,7 @@ viewDiv state statusText inputValue statusClass =
 
 viewInitial : Html Msg
 viewInitial =
-    div []
+    div [ class "game" ]
         [ div [ class "info initial" ] [ text "Paina välilyöntiä aloittaaksesi" ]
         , input
             [ autofocus True
