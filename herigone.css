@@ -23,3 +23,19 @@ body {
 .info.over {
   font-size: 4em;
 }
+
+.timer {
+  text-align: center;
+  font-size: 60px;
+  font-family: fantasy;
+  background-color: red;
+  color: white;
+}
+
+.associations-left {
+  text-align: center;
+  font-size: 60px;
+  font-family: fantasy;
+  background-color: lightblue;
+  color: white;
+}

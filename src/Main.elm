@@ -263,7 +263,9 @@ viewRunning state =
             , value state.input
             ]
             []
-        , div [] [ text (toString state.timer) ]
+        , div [ class "timer" ] [ text (toString state.timer ++ " s") ]
+        , div [ class "associations-left" ] [ text (toString (List.length state.left) ++ " jäljellä") ]
+        , div [ class "debug" ] [ text (toString state) ]
         ]
 
 
