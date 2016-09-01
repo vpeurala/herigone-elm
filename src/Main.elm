@@ -187,66 +187,68 @@ init =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
-    case ( action, model ) of
-        ( NoOp, model ) ->
-            ( model, Cmd.none )
+    Debug.log "update"
+        (case ( action, model ) of
+            ( NoOp, model ) ->
+                ( model, Cmd.none )
 
-        ( StartOrPause, Initial ) ->
-            ( Running startGame, getInitialState )
+            ( StartOrPause, Initial ) ->
+                ( Running startGame, getInitialState )
 
-        ( StartOrPause, Running state ) ->
-            ( Paused state, Cmd.none )
+            ( StartOrPause, Running state ) ->
+                ( Paused state, Cmd.none )
 
-        ( StartOrPause, Paused state ) ->
-            ( Running state, Cmd.none )
+            ( StartOrPause, Paused state ) ->
+                ( Running state, Cmd.none )
 
-        ( StartOrPause, Over state ) ->
-            ( Running startGame, getInitialState )
+            ( StartOrPause, Over state ) ->
+                ( Running startGame, getInitialState )
 
-        ( Input c, Running state ) ->
-            let
-                input' =
-                    state.input ++ (String.fromChar c)
-            in
-                if toUpper input' == toUpper state.current.word then
-                    case state.left of
-                        [] ->
-                            ( Over { state | input = input' }, Cmd.none )
+            ( Input c, Running state ) ->
+                let
+                    input' =
+                        state.input ++ (String.fromChar c)
+                in
+                    if toUpper input' == toUpper state.current.word then
+                        case state.left of
+                            [] ->
+                                ( Over { state | input = input' }, Cmd.none )
 
-                        x :: xs ->
-                            ( Running
-                                { state
-                                    | input = ""
-                                    , current = x
-                                    , left = xs
-                                    , done = state.current :: state.done
-                                }
-                            , Cmd.none
-                            )
-                else
+                            x :: xs ->
+                                ( Running
+                                    { state
+                                        | input = ""
+                                        , current = x
+                                        , left = xs
+                                        , done = state.current :: state.done
+                                    }
+                                , Cmd.none
+                                )
+                    else
+                        ( Running { state | input = input' }, Cmd.none )
+
+            ( Input c, model ) ->
+                ( model, Cmd.none )
+
+            ( Backspace, Running state ) ->
+                let
+                    input' =
+                        String.slice 0 -1 state.input
+                in
                     ( Running { state | input = input' }, Cmd.none )
 
-        ( Input c, model ) ->
-            ( model, Cmd.none )
+            ( Backspace, model ) ->
+                ( model, Cmd.none )
 
-        ( Backspace, Running state ) ->
-            let
-                input' =
-                    String.slice 0 -1 state.input
-            in
-                ( Running { state | input = input' }, Cmd.none )
+            ( Tick, Running state ) ->
+                ( Running { state | timer = state.timer + 1 }, Cmd.none )
 
-        ( Backspace, model ) ->
-            ( model, Cmd.none )
+            ( Tick, model ) ->
+                ( model, Cmd.none )
 
-        ( Tick, Running state ) ->
-            ( Running { state | timer = state.timer + 1 }, Cmd.none )
-
-        ( Tick, model ) ->
-            ( model, Cmd.none )
-
-        ( InitialState _, model ) ->
-            ( model, Cmd.none )
+            ( InitialState newModel, model ) ->
+                ( newModel, Cmd.none )
+        )
 
 
 viewRunning : GameState -> Html Msg
@@ -287,20 +289,19 @@ decodeKeyCode =
 
 view : Model -> Html Msg
 view model =
-    Debug.log ("view, model: " ++ (toString model) ++ "")
-        (case model of
-            Initial ->
-                viewDiv "Paina välilyöntiä aloittaaksesi" "" "initial"
+    (case model of
+        Initial ->
+            viewDiv "Paina välilyöntiä aloittaaksesi" "" "initial"
 
-            Running state ->
-                viewRunning state
+        Running state ->
+            viewRunning state
 
-            Paused state ->
-                viewDiv "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
+        Paused state ->
+            viewDiv "Pysäytetty, paina välilyöntiä jatkaaksesi" state.input "paused"
 
-            Over state ->
-                viewDiv "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
-        )
+        Over state ->
+            viewDiv "Peli on loppu, paina välilyöntiä aloittaaksesi uuden" state.input "over"
+    )
 
 
 const : b -> (a -> b)
@@ -320,4 +321,4 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Keyboard.ups (\kc -> (keyboard kc))
+    Keyboard.downs (\kc -> (keyboard kc))

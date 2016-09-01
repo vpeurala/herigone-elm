@@ -9767,117 +9767,122 @@ var _user$project$Main$getInitialState = A2(
 	_user$project$Main$nonEmptyRandomListOfInts);
 var _user$project$Main$update = F2(
 	function (action, model) {
-		var _p7 = {ctor: '_Tuple2', _0: action, _1: model};
-		switch (_p7._0.ctor) {
-			case 'NoOp':
-				return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'StartOrPause':
-				switch (_p7._1.ctor) {
-					case 'Initial':
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_user$project$Main$startGame),
-							_1: _user$project$Main$getInitialState
-						};
-					case 'Running':
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Paused(_p7._1._0),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					case 'Paused':
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_p7._1._0),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					default:
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_user$project$Main$startGame),
-							_1: _user$project$Main$getInitialState
-						};
-				}
-			case 'Input':
-				if (_p7._1.ctor === 'Running') {
-					var _p9 = _p7._1._0;
-					var input$ = A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p9.input,
-						_elm_lang$core$String$fromChar(_p7._0._0));
-					if (_elm_lang$core$Native_Utils.eq(
-						_elm_lang$core$String$toUpper(input$),
-						_elm_lang$core$String$toUpper(_p9.current.word))) {
-						var _p8 = _p9.left;
-						if (_p8.ctor === '[]') {
-							return {
-								ctor: '_Tuple2',
-								_0: _user$project$Main$Over(
-									_elm_lang$core$Native_Utils.update(
-										_p9,
-										{input: input$})),
-								_1: _elm_lang$core$Platform_Cmd$none
-							};
+		return A2(
+			_elm_lang$core$Debug$log,
+			'update',
+			function () {
+				var _p7 = {ctor: '_Tuple2', _0: action, _1: model};
+				switch (_p7._0.ctor) {
+					case 'NoOp':
+						return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
+					case 'StartOrPause':
+						switch (_p7._1.ctor) {
+							case 'Initial':
+								return {
+									ctor: '_Tuple2',
+									_0: _user$project$Main$Running(_user$project$Main$startGame),
+									_1: _user$project$Main$getInitialState
+								};
+							case 'Running':
+								return {
+									ctor: '_Tuple2',
+									_0: _user$project$Main$Paused(_p7._1._0),
+									_1: _elm_lang$core$Platform_Cmd$none
+								};
+							case 'Paused':
+								return {
+									ctor: '_Tuple2',
+									_0: _user$project$Main$Running(_p7._1._0),
+									_1: _elm_lang$core$Platform_Cmd$none
+								};
+							default:
+								return {
+									ctor: '_Tuple2',
+									_0: _user$project$Main$Running(_user$project$Main$startGame),
+									_1: _user$project$Main$getInitialState
+								};
+						}
+					case 'Input':
+						if (_p7._1.ctor === 'Running') {
+							var _p9 = _p7._1._0;
+							var input$ = A2(
+								_elm_lang$core$Basics_ops['++'],
+								_p9.input,
+								_elm_lang$core$String$fromChar(_p7._0._0));
+							if (_elm_lang$core$Native_Utils.eq(
+								_elm_lang$core$String$toUpper(input$),
+								_elm_lang$core$String$toUpper(_p9.current.word))) {
+								var _p8 = _p9.left;
+								if (_p8.ctor === '[]') {
+									return {
+										ctor: '_Tuple2',
+										_0: _user$project$Main$Over(
+											_elm_lang$core$Native_Utils.update(
+												_p9,
+												{input: input$})),
+										_1: _elm_lang$core$Platform_Cmd$none
+									};
+								} else {
+									return {
+										ctor: '_Tuple2',
+										_0: _user$project$Main$Running(
+											_elm_lang$core$Native_Utils.update(
+												_p9,
+												{
+													input: '',
+													current: _p8._0,
+													left: _p8._1,
+													done: A2(_elm_lang$core$List_ops['::'], _p9.current, _p9.done)
+												})),
+										_1: _elm_lang$core$Platform_Cmd$none
+									};
+								}
+							} else {
+								return {
+									ctor: '_Tuple2',
+									_0: _user$project$Main$Running(
+										_elm_lang$core$Native_Utils.update(
+											_p9,
+											{input: input$})),
+									_1: _elm_lang$core$Platform_Cmd$none
+								};
+							}
 						} else {
+							return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
+						}
+					case 'Backspace':
+						if (_p7._1.ctor === 'Running') {
+							var _p10 = _p7._1._0;
+							var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p10.input);
 							return {
 								ctor: '_Tuple2',
 								_0: _user$project$Main$Running(
 									_elm_lang$core$Native_Utils.update(
-										_p9,
-										{
-											input: '',
-											current: _p8._0,
-											left: _p8._1,
-											done: A2(_elm_lang$core$List_ops['::'], _p9.current, _p9.done)
-										})),
+										_p10,
+										{input: input$})),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
+						} else {
+							return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
 						}
-					} else {
-						return {
-							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(
-								_elm_lang$core$Native_Utils.update(
-									_p9,
-									{input: input$})),
-							_1: _elm_lang$core$Platform_Cmd$none
-						};
-					}
-				} else {
-					return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
+					case 'Tick':
+						if (_p7._1.ctor === 'Running') {
+							var _p11 = _p7._1._0;
+							return {
+								ctor: '_Tuple2',
+								_0: _user$project$Main$Running(
+									_elm_lang$core$Native_Utils.update(
+										_p11,
+										{timer: _p11.timer + 1})),
+								_1: _elm_lang$core$Platform_Cmd$none
+							};
+						} else {
+							return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
+						}
+					default:
+						return {ctor: '_Tuple2', _0: _p7._0._0, _1: _elm_lang$core$Platform_Cmd$none};
 				}
-			case 'Backspace':
-				if (_p7._1.ctor === 'Running') {
-					var _p10 = _p7._1._0;
-					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p10.input);
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$Running(
-							_elm_lang$core$Native_Utils.update(
-								_p10,
-								{input: input$})),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'Tick':
-				if (_p7._1.ctor === 'Running') {
-					var _p11 = _p7._1._0;
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$Running(
-							_elm_lang$core$Native_Utils.update(
-								_p11,
-								{timer: _p11.timer + 1})),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			default:
-				return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-		}
+			}());
 	});
 var _user$project$Main$Tick = {ctor: 'Tick'};
 var _user$project$Main$Backspace = {ctor: 'Backspace'};
@@ -9989,31 +9994,20 @@ var _user$project$Main$viewDiv = F3(
 				]));
 	});
 var _user$project$Main$view = function (model) {
-	return A2(
-		_elm_lang$core$Debug$log,
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			'view, model: ',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Basics$toString(model),
-				'')),
-		function () {
-			var _p13 = model;
-			switch (_p13.ctor) {
-				case 'Initial':
-					return A3(_user$project$Main$viewDiv, 'Paina välilyöntiä aloittaaksesi', '', 'initial');
-				case 'Running':
-					return _user$project$Main$viewRunning(_p13._0);
-				case 'Paused':
-					return A3(_user$project$Main$viewDiv, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p13._0.input, 'paused');
-				default:
-					return A3(_user$project$Main$viewDiv, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p13._0.input, 'over');
-			}
-		}());
+	var _p13 = model;
+	switch (_p13.ctor) {
+		case 'Initial':
+			return A3(_user$project$Main$viewDiv, 'Paina välilyöntiä aloittaaksesi', '', 'initial');
+		case 'Running':
+			return _user$project$Main$viewRunning(_p13._0);
+		case 'Paused':
+			return A3(_user$project$Main$viewDiv, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p13._0.input, 'paused');
+		default:
+			return A3(_user$project$Main$viewDiv, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p13._0.input, 'over');
+	}
 };
 var _user$project$Main$subscriptions = function (model) {
-	return _elm_lang$keyboard$Keyboard$ups(
+	return _elm_lang$keyboard$Keyboard$downs(
 		function (kc) {
 			return _user$project$Main$keyboard(kc);
 		});
