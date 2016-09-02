@@ -10080,43 +10080,6 @@ var _user$project$Main$viewRunning = function (state) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
-				function () {
-				var _p11 = state.done;
-				if (_p11.ctor === '[]') {
-					return A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$style(
-								_elm_lang$core$Native_List.fromArray(
-									[
-										{ctor: '_Tuple2', _0: 'display', _1: 'none'}
-									]))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[]));
-				} else {
-					var _p12 = _p11._0;
-					return A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class(
-								A2(_elm_lang$core$Basics_ops['++'], 'info running ', _p12.association.word))
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									_p12.association.number,
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										_p12.association.word,
-										_elm_lang$core$Basics$toString(_p12.duration))))
-							]));
-				}
-			}(),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
@@ -10286,18 +10249,18 @@ var _user$project$Main$viewInitial = A2(
 				[]))
 		]));
 var _user$project$Main$view = function (model) {
-	var _p13 = model;
-	switch (_p13.ctor) {
+	var _p11 = model;
+	switch (_p11.ctor) {
 		case 'Initial':
 			return _user$project$Main$viewInitial;
 		case 'Running':
-			return _user$project$Main$viewRunning(_p13._0);
+			return _user$project$Main$viewRunning(_p11._0);
 		case 'Paused':
-			var _p14 = _p13._0;
-			return A4(_user$project$Main$viewDiv, _p14, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p14.input, 'paused');
+			var _p12 = _p11._0;
+			return A4(_user$project$Main$viewDiv, _p12, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p12.input, 'paused');
 		default:
-			var _p15 = _p13._0;
-			return A4(_user$project$Main$viewDiv, _p15, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p15.input, 'over');
+			var _p13 = _p11._0;
+			return A4(_user$project$Main$viewDiv, _p13, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p13.input, 'over');
 	}
 };
 var _user$project$Main$subscriptions = function (model) {

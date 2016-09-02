@@ -253,18 +253,21 @@ viewRunning state =
             , value state.input
             ]
             []
+          {--
         , case state.done of
             [] ->
                 div [ style [ ( "display", "none" ) ] ] []
 
             x :: xs ->
                 div
-                    [ class
-                        ("info running "
+                    [ id x.association.word
+                    , class
+                        ("animated "
                             ++ x.association.word
                         )
                     ]
                     [ text (x.association.number ++ x.association.word ++ (toString x.duration)) ]
+                    --}
         , div [ class "timer" ] [ text (formatWholeGameTimer state) ]
         , div [ class "timer" ] [ text (formatCurrentWordTimer state) ]
         , div [ class "associations-left" ] [ text (toString (List.length state.left) ++ " jäljellä") ]
