@@ -9,18 +9,11 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Random exposing (Generator(..), initialSeed, int, generate, list)
 import String exposing (fromChar, toUpper)
-
-
--- import Task
--- import Task exposing (Task)
--- import Task as Task
-
 import Time exposing (Time)
 import Time
 
 
 -- OS
--- import Basics.Extra exposing (never)
 
 import Formatting exposing (..)
 import Keyboard
