@@ -341,11 +341,6 @@ view model =
     )
 
 
-const : b -> (a -> b)
-const x =
-    \_ -> x
-
-
 main : Program Never
 main =
     Html.program

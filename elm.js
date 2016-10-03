@@ -9650,142 +9650,126 @@ var _mgold$elm_nonempty_list$List_Nonempty$scanl1 = F2(
 		}
 	});
 
-var _user$project$Associations$allAssociations = function () {
-	var _p0 = _mgold$elm_nonempty_list$List_Nonempty$fromList(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				{number: '0', word: 'hai'},
-				{number: '1', word: 'jää'},
-				{number: '2', word: 'kuu'},
-				{number: '3', word: 'luu'},
-				{number: '4', word: 'maa'},
-				{number: '5', word: 'puu'},
-				{number: '6', word: 'rae'},
-				{number: '7', word: 'suu'},
-				{number: '8', word: 'täi'},
-				{number: '9', word: 'voi'},
-				{number: '00', word: 'hiha'},
-				{number: '01', word: 'häjy'},
-				{number: '02', word: 'hauki'},
-				{number: '03', word: 'huilu'},
-				{number: '04', word: 'haamu'},
-				{number: '05', word: 'huopa'},
-				{number: '06', word: 'hiiri'},
-				{number: '07', word: 'huusi'},
-				{number: '08', word: 'hauta'},
-				{number: '09', word: 'haavi'},
-				{number: '10', word: 'jauho'},
-				{number: '11', word: 'jojo'},
-				{number: '12', word: 'joki'},
-				{number: '13', word: 'joulu'},
-				{number: '14', word: 'juomu'},
-				{number: '15', word: 'jopo'},
-				{number: '16', word: 'juuri'},
-				{number: '17', word: 'jousi'},
-				{number: '18', word: 'jeti'},
-				{number: '19', word: 'jyvä'},
-				{number: '20', word: 'koho'},
-				{number: '21', word: 'koju'},
-				{number: '22', word: 'keko'},
-				{number: '23', word: 'kela'},
-				{number: '24', word: 'kuomu'},
-				{number: '25', word: 'kupu'},
-				{number: '26', word: 'koira'},
-				{number: '27', word: 'kaasu'},
-				{number: '28', word: 'kota'},
-				{number: '29', word: 'kavio'},
-				{number: '30', word: 'liha'},
-				{number: '31', word: 'lyijy'},
-				{number: '32', word: 'laki'},
-				{number: '33', word: 'luola'},
-				{number: '34', word: 'liima'},
-				{number: '35', word: 'lapio'},
-				{number: '36', word: 'luuri'},
-				{number: '37', word: 'liesi'},
-				{number: '38', word: 'luoti'},
-				{number: '39', word: 'laiva'},
-				{number: '40', word: 'maha'},
-				{number: '41', word: 'maja'},
-				{number: '42', word: 'muki'},
-				{number: '43', word: 'mela'},
-				{number: '44', word: 'muumi'},
-				{number: '45', word: 'mopo'},
-				{number: '46', word: 'muuri'},
-				{number: '47', word: 'muusi'},
-				{number: '48', word: 'mato'},
-				{number: '49', word: 'muovi'},
-				{number: '50', word: 'pyyhe'},
-				{number: '51', word: 'poiju'},
-				{number: '52', word: 'puku'},
-				{number: '53', word: 'pulu'},
-				{number: '54', word: 'puuma'},
-				{number: '55', word: 'pipo'},
-				{number: '56', word: 'pora'},
-				{number: '57', word: 'puosu'},
-				{number: '58', word: 'pata'},
-				{number: '59', word: 'paavi'},
-				{number: '60', word: 'raha'},
-				{number: '61', word: 'ryijy'},
-				{number: '62', word: 'reki'},
-				{number: '63', word: 'railo'},
-				{number: '64', word: 'riimu'},
-				{number: '65', word: 'rapu'},
-				{number: '66', word: 'ruori'},
-				{number: '67', word: 'ruusu'},
-				{number: '68', word: 'ruoto'},
-				{number: '69', word: 'rovio'},
-				{number: '70', word: 'saha'},
-				{number: '71', word: 'soija'},
-				{number: '72', word: 'sika'},
-				{number: '73', word: 'siili'},
-				{number: '74', word: 'siima'},
-				{number: '75', word: 'siipi'},
-				{number: '76', word: 'saari'},
-				{number: '77', word: 'susi'},
-				{number: '78', word: 'suti'},
-				{number: '79', word: 'sauva'},
-				{number: '80', word: 'tuohi'},
-				{number: '81', word: 'taiji'},
-				{number: '82', word: 'tiuku'},
-				{number: '83', word: 'tuoli'},
-				{number: '84', word: 'taimi'},
-				{number: '85', word: 'tipu'},
-				{number: '86', word: 'tiira'},
-				{number: '87', word: 'teesi'},
-				{number: '88', word: 'toti'},
-				{number: '89', word: 'tavi'},
-				{number: '90', word: 'vuohi'},
-				{number: '91', word: 'vaja'},
-				{number: '92', word: 'vaaka'},
-				{number: '93', word: 'viulu'},
-				{number: '94', word: 'vaimo'},
-				{number: '95', word: 'vapa'},
-				{number: '96', word: 'viiri'},
-				{number: '97', word: 'vaasi'},
-				{number: '98', word: 'vouti'},
-				{number: '99', word: 'vauva'}
-			]));
-	if (_p0.ctor === 'Nothing') {
-		return _elm_lang$core$Native_Utils.crashCase(
-			'Associations',
-			{
-				start: {line: 20, column: 5},
-				end: {line: 138, column: 14}
-			},
-			_p0)('This is impossible!');
-	} else {
-		return _p0._0;
-	}
-}();
+var _user$project$Associations$allAssociations = A2(
+	_mgold$elm_nonempty_list$List_Nonempty$Nonempty,
+	{number: '0', word: 'hai'},
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{number: '1', word: 'jää'},
+			{number: '2', word: 'kuu'},
+			{number: '3', word: 'luu'},
+			{number: '4', word: 'maa'},
+			{number: '5', word: 'puu'},
+			{number: '6', word: 'rae'},
+			{number: '7', word: 'suu'},
+			{number: '8', word: 'täi'},
+			{number: '9', word: 'voi'},
+			{number: '00', word: 'hiha'},
+			{number: '01', word: 'häjy'},
+			{number: '02', word: 'hauki'},
+			{number: '03', word: 'huilu'},
+			{number: '04', word: 'haamu'},
+			{number: '05', word: 'huopa'},
+			{number: '06', word: 'hiiri'},
+			{number: '07', word: 'huusi'},
+			{number: '08', word: 'hauta'},
+			{number: '09', word: 'haavi'},
+			{number: '10', word: 'jauho'},
+			{number: '11', word: 'jojo'},
+			{number: '12', word: 'joki'},
+			{number: '13', word: 'joulu'},
+			{number: '14', word: 'juomu'},
+			{number: '15', word: 'jopo'},
+			{number: '16', word: 'juuri'},
+			{number: '17', word: 'jousi'},
+			{number: '18', word: 'jeti'},
+			{number: '19', word: 'jyvä'},
+			{number: '20', word: 'koho'},
+			{number: '21', word: 'koju'},
+			{number: '22', word: 'keko'},
+			{number: '23', word: 'kela'},
+			{number: '24', word: 'kuomu'},
+			{number: '25', word: 'kupu'},
+			{number: '26', word: 'koira'},
+			{number: '27', word: 'kaasu'},
+			{number: '28', word: 'kota'},
+			{number: '29', word: 'kavio'},
+			{number: '30', word: 'liha'},
+			{number: '31', word: 'lyijy'},
+			{number: '32', word: 'laki'},
+			{number: '33', word: 'luola'},
+			{number: '34', word: 'liima'},
+			{number: '35', word: 'lapio'},
+			{number: '36', word: 'luuri'},
+			{number: '37', word: 'liesi'},
+			{number: '38', word: 'luoti'},
+			{number: '39', word: 'laiva'},
+			{number: '40', word: 'maha'},
+			{number: '41', word: 'maja'},
+			{number: '42', word: 'muki'},
+			{number: '43', word: 'mela'},
+			{number: '44', word: 'muumi'},
+			{number: '45', word: 'mopo'},
+			{number: '46', word: 'muuri'},
+			{number: '47', word: 'muusi'},
+			{number: '48', word: 'mato'},
+			{number: '49', word: 'muovi'},
+			{number: '50', word: 'pyyhe'},
+			{number: '51', word: 'poiju'},
+			{number: '52', word: 'puku'},
+			{number: '53', word: 'pulu'},
+			{number: '54', word: 'puuma'},
+			{number: '55', word: 'pipo'},
+			{number: '56', word: 'pora'},
+			{number: '57', word: 'puosu'},
+			{number: '58', word: 'pata'},
+			{number: '59', word: 'paavi'},
+			{number: '60', word: 'raha'},
+			{number: '61', word: 'ryijy'},
+			{number: '62', word: 'reki'},
+			{number: '63', word: 'railo'},
+			{number: '64', word: 'riimu'},
+			{number: '65', word: 'rapu'},
+			{number: '66', word: 'ruori'},
+			{number: '67', word: 'ruusu'},
+			{number: '68', word: 'ruoto'},
+			{number: '69', word: 'rovio'},
+			{number: '70', word: 'saha'},
+			{number: '71', word: 'soija'},
+			{number: '72', word: 'sika'},
+			{number: '73', word: 'siili'},
+			{number: '74', word: 'siima'},
+			{number: '75', word: 'siipi'},
+			{number: '76', word: 'saari'},
+			{number: '77', word: 'susi'},
+			{number: '78', word: 'suti'},
+			{number: '79', word: 'sauva'},
+			{number: '80', word: 'tuohi'},
+			{number: '81', word: 'taiji'},
+			{number: '82', word: 'tiuku'},
+			{number: '83', word: 'tuoli'},
+			{number: '84', word: 'taimi'},
+			{number: '85', word: 'tipu'},
+			{number: '86', word: 'tiira'},
+			{number: '87', word: 'teesi'},
+			{number: '88', word: 'toti'},
+			{number: '89', word: 'tavi'},
+			{number: '90', word: 'vuohi'},
+			{number: '91', word: 'vaja'},
+			{number: '92', word: 'vaaka'},
+			{number: '93', word: 'viulu'},
+			{number: '94', word: 'vaimo'},
+			{number: '95', word: 'vapa'},
+			{number: '96', word: 'viiri'},
+			{number: '97', word: 'vaasi'},
+			{number: '98', word: 'vouti'},
+			{number: '99', word: 'vauva'}
+		]));
 var _user$project$Associations$Association = F2(
 	function (a, b) {
 		return {number: a, word: b};
 	});
 
-var _user$project$Main$const = F2(
-	function (x, _p0) {
-		return x;
-	});
 var _user$project$Main$formatCurrentWordTimer = function (state) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
@@ -9813,27 +9797,27 @@ var _user$project$Main$formatWholeGameTimer = function (state) {
 		's');
 };
 var _user$project$Main$unsafeNonemptyList = function (l) {
-	var _p1 = l;
-	if (_p1.ctor === '[]') {
+	var _p0 = l;
+	if (_p0.ctor === '[]') {
 		return _elm_lang$core$Native_Utils.crashCase(
 			'Main',
 			{
 				start: {line: 83, column: 5},
 				end: {line: 94, column: 14}
 			},
-			_p1)('unsafeNonemptyList failed, empty list given');
+			_p0)('unsafeNonemptyList failed, empty list given');
 	} else {
-		var _p3 = _mgold$elm_nonempty_list$List_Nonempty$fromList(l);
-		if (_p3.ctor === 'Nothing') {
+		var _p2 = _mgold$elm_nonempty_list$List_Nonempty$fromList(l);
+		if (_p2.ctor === 'Nothing') {
 			return _elm_lang$core$Native_Utils.crashCase(
 				'Main',
 				{
 					start: {line: 88, column: 14},
 					end: {line: 93, column: 22}
 				},
-				_p3)('This should be impossible');
+				_p2)('This should be impossible');
 		} else {
-			return _p3._0;
+			return _p2._0;
 		}
 	}
 };
@@ -9901,46 +9885,46 @@ var _user$project$Main$getInitialState = A2(
 	_user$project$Main$nonEmptyRandomListOfInts);
 var _user$project$Main$update = F2(
 	function (action, model) {
-		var _p5 = {ctor: '_Tuple2', _0: action, _1: model};
-		switch (_p5._0.ctor) {
+		var _p4 = {ctor: '_Tuple2', _0: action, _1: model};
+		switch (_p4._0.ctor) {
 			case 'NoOp':
-				return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
+				return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'StartOrPause':
-				switch (_p5._1.ctor) {
+				switch (_p4._1.ctor) {
 					case 'Initial':
 						return {ctor: '_Tuple2', _0: _user$project$Main$Initial, _1: _user$project$Main$getInitialState};
 					case 'Running':
 						return {
 							ctor: '_Tuple2',
-							_0: _user$project$Main$Paused(_p5._1._0),
+							_0: _user$project$Main$Paused(_p4._1._0),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					case 'Paused':
 						return {
 							ctor: '_Tuple2',
-							_0: _user$project$Main$Running(_p5._1._0),
+							_0: _user$project$Main$Running(_p4._1._0),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					default:
 						return {ctor: '_Tuple2', _0: _user$project$Main$Initial, _1: _user$project$Main$getInitialState};
 				}
 			case 'Input':
-				if (_p5._1.ctor === 'Running') {
-					var _p7 = _p5._1._0;
+				if (_p4._1.ctor === 'Running') {
+					var _p6 = _p4._1._0;
 					var input$ = A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p7.input,
-						_elm_lang$core$String$fromChar(_p5._0._0));
+						_p6.input,
+						_elm_lang$core$String$fromChar(_p4._0._0));
 					if (_elm_lang$core$Native_Utils.eq(
 						_elm_lang$core$String$toUpper(input$),
-						_elm_lang$core$String$toUpper(_p7.current.word))) {
-						var _p6 = _p7.left;
-						if (_p6.ctor === '[]') {
+						_elm_lang$core$String$toUpper(_p6.current.word))) {
+						var _p5 = _p6.left;
+						if (_p5.ctor === '[]') {
 							return {
 								ctor: '_Tuple2',
 								_0: _user$project$Main$Over(
 									_elm_lang$core$Native_Utils.update(
-										_p7,
+										_p6,
 										{input: input$})),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
@@ -9949,16 +9933,16 @@ var _user$project$Main$update = F2(
 								ctor: '_Tuple2',
 								_0: _user$project$Main$Running(
 									_elm_lang$core$Native_Utils.update(
-										_p7,
+										_p6,
 										{
 											input: '',
-											current: _p6._0,
-											left: _p6._1,
+											current: _p5._0,
+											left: _p5._1,
 											done: A2(
 												_elm_lang$core$List_ops['::'],
-												{association: _p7.current, duration: _p7.timer.currentTime - _p7.timer.timeAtStartOfThisAssociation},
-												_p7.done),
-											timer: {currentTime: _p7.timer.currentTime, timeAtStartOfThisAssociation: _p7.timer.currentTime}
+												{association: _p6.current, duration: _p6.timer.currentTime - _p6.timer.timeAtStartOfThisAssociation},
+												_p6.done),
+											timer: {currentTime: _p6.timer.currentTime, timeAtStartOfThisAssociation: _p6.timer.currentTime}
 										})),
 								_1: _elm_lang$core$Platform_Cmd$none
 							};
@@ -9968,33 +9952,33 @@ var _user$project$Main$update = F2(
 							ctor: '_Tuple2',
 							_0: _user$project$Main$Running(
 								_elm_lang$core$Native_Utils.update(
-									_p7,
+									_p6,
 									{input: input$})),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					}
 				} else {
-					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'Backspace':
-				if (_p5._1.ctor === 'Running') {
-					var _p8 = _p5._1._0;
-					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p8.input);
+				if (_p4._1.ctor === 'Running') {
+					var _p7 = _p4._1._0;
+					var input$ = A3(_elm_lang$core$String$slice, 0, -1, _p7.input);
 					return {
 						ctor: '_Tuple2',
 						_0: _user$project$Main$Running(
 							_elm_lang$core$Native_Utils.update(
-								_p8,
+								_p7,
 								{input: input$})),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'Tick':
-				if (_p5._1.ctor === 'Running') {
-					var _p9 = _p5._1._0;
-					var timer = _p9.timer;
+				if (_p4._1.ctor === 'Running') {
+					var _p8 = _p4._1._0;
+					var timer = _p8.timer;
 					var timer$ = _elm_lang$core$Native_Utils.update(
 						timer,
 						{currentTime: timer.currentTime + 1});
@@ -10002,15 +9986,15 @@ var _user$project$Main$update = F2(
 						ctor: '_Tuple2',
 						_0: _user$project$Main$Running(
 							_elm_lang$core$Native_Utils.update(
-								_p9,
+								_p8,
 								{timer: timer$})),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					return {ctor: '_Tuple2', _0: _p5._1, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p4._1, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			default:
-				return {ctor: '_Tuple2', _0: _p5._0._0, _1: _elm_lang$core$Platform_Cmd$none};
+				return {ctor: '_Tuple2', _0: _p4._0._0, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _user$project$Main$Tick = function (a) {
@@ -10023,8 +10007,8 @@ var _user$project$Main$Input = function (a) {
 var _user$project$Main$StartOrPause = {ctor: 'StartOrPause'};
 var _user$project$Main$NoOp = {ctor: 'NoOp'};
 var _user$project$Main$keyboard = function (x) {
-	var _p10 = x;
-	switch (_p10) {
+	var _p9 = x;
+	switch (_p9) {
 		case 32:
 			return _user$project$Main$StartOrPause;
 		case 8:
@@ -10036,7 +10020,7 @@ var _user$project$Main$keyboard = function (x) {
 			return _user$project$Main$Input(
 				_elm_lang$core$Native_Utils.chr('Ö'));
 		default:
-			var ch = _elm_lang$core$Char$fromCode(_p10);
+			var ch = _elm_lang$core$Char$fromCode(_p9);
 			return _elm_lang$core$Char$isUpper(ch) ? _user$project$Main$Input(ch) : _user$project$Main$NoOp;
 	}
 };
@@ -10249,18 +10233,18 @@ var _user$project$Main$viewInitial = A2(
 				[]))
 		]));
 var _user$project$Main$view = function (model) {
-	var _p11 = model;
-	switch (_p11.ctor) {
+	var _p10 = model;
+	switch (_p10.ctor) {
 		case 'Initial':
 			return _user$project$Main$viewInitial;
 		case 'Running':
-			return _user$project$Main$viewRunning(_p11._0);
+			return _user$project$Main$viewRunning(_p10._0);
 		case 'Paused':
-			var _p12 = _p11._0;
-			return A4(_user$project$Main$viewDiv, _p12, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p12.input, 'paused');
+			var _p11 = _p10._0;
+			return A4(_user$project$Main$viewDiv, _p11, 'Pysäytetty, paina välilyöntiä jatkaaksesi', _p11.input, 'paused');
 		default:
-			var _p13 = _p11._0;
-			return A4(_user$project$Main$viewDiv, _p13, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p13.input, 'over');
+			var _p12 = _p10._0;
+			return A4(_user$project$Main$viewDiv, _p12, 'Peli on loppu, paina välilyöntiä aloittaaksesi uuden', _p12.input, 'over');
 	}
 };
 var _user$project$Main$subscriptions = function (model) {
