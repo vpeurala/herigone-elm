@@ -24,6 +24,7 @@ import List.Nonempty as Nonempty
 -- Application
 
 import Associations exposing (..)
+import NonemptyUtil exposing (shuffle)
 
 
 -- Code
@@ -66,27 +67,6 @@ type Msg
     | InitialState Model
 
 
-nonEmptyRandomListOfInts : Random.Generator (Nonempty Int)
-nonEmptyRandomListOfInts =
-    Random.map unsafeNonemptyList (Random.list (Nonempty.length allAssociations) (Random.int 0 1000))
-
-
-unsafeNonemptyList : List a -> Nonempty a
-unsafeNonemptyList l =
-    case l of
-        [] ->
-            Debug.crash "unsafeNonemptyList failed, empty list given"
-
-        _ ->
-            (case (Nonempty.fromList l) of
-                Nothing ->
-                    Debug.crash "This should be impossible"
-
-                Just x ->
-                    x
-            )
-
-
 randomModel : Random.Generator Model
 randomModel =
     Random.map generateInitialModelFromRandomListOfInts nonEmptyRandomListOfInts
@@ -97,17 +77,11 @@ getInitialState =
     Random.generate (\ns -> InitialState (generateInitialModelFromRandomListOfInts ns)) nonEmptyRandomListOfInts
 
 
-generateInitialModelFromRandomListOfInts : Nonempty Int -> Model
-generateInitialModelFromRandomListOfInts rands =
+generateInitialModelFromRandomListOfInts : Model
+generateInitialModelFromRandomListOfInts =
     let
-        zips =
-            Nonempty.map2 (,) allAssociations rands
-
-        sorted =
-            Nonempty.sortBy snd zips
-
         allAssociationsInRandomOrder =
-            Nonempty.map fst sorted
+            shuffle allAssociations
     in
         Running
             { current = Nonempty.head allAssociationsInRandomOrder

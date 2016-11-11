@@ -1,29 +1,38 @@
-module NonemptyUtil exposing (nonempty, shuffle)
+module NonemptyUtil exposing (shuffle)
 
-import Random exposing (Generator, Generator(..), Seed)
-import List.Nonempty as NE exposing (Nonempty, (:::))
-
-
-nonempty : Int -> Generator a -> Generator (Nonempty a)
-nonempty n generator =
-    if (n < 1) then
-        Debug.crash ("Smaller than 1 passed as length to nonempty list generator: " ++ (toString n))
-    else
-        Generator <| \seed -> nonemptyHelp [] n generate seed
-
-
-nonemptyHelp : List a -> Int -> ( Seed, ( a, Seed ) ) -> Seed -> ( List a, Seed )
-nonemptyHelp list n generate seed =
-    if (n < 1) then
-        ( NE.reverse list, seed )
-    else
-        let
-            ( value, newSeed ) =
-                generate seed
-        in
-            nonemptyHelp (value ::: list) (n - 1) generate newSeed
+import Random exposing (Generator)
+import List.Nonempty as Nonempty exposing (Nonempty)
 
 
 shuffle : Nonempty a -> Generator (Nonempty a)
 shuffle input =
-    Debug.crash "shuffle"
+    let
+        len : Int
+        len =
+            Nonempty.length input
+
+        randoms : Generator (Nonempty Int)
+        randoms =
+            nonempty len (Random.int 0 10000)
+
+        zips : Generator (Nonempty ( Int, Int ))
+        zips =
+            Random.andThen randoms (\rs -> Nonempty.map2 (,) input rs)
+
+        sorted : Generator (Nonempty ( Int, Int ))
+        sorted =
+            Random.andThen zips (Nonempty.sortBy snd)
+    in
+        Nonempty.sortBy snd zips |> Nonempty.map fst
+
+
+nonempty : Int -> Generator a -> Generator (Nonempty a)
+nonempty len gen =
+    let
+        ( head, seed' ) =
+            Random.step gen (Random.initialSeed 0)
+
+        tail =
+            Random.list (len - 1) gen
+    in
+        Random.map (\tail -> Nonempty.Nonempty head tail) tail
