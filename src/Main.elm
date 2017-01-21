@@ -67,32 +67,23 @@ type Msg
     | InitialState Model
 
 
-randomModel : Random.Generator Model
-randomModel =
-    Random.map generateInitialModelFromRandomListOfInts nonEmptyRandomListOfInts
-
-
 getInitialState : Cmd Msg
 getInitialState =
-    Random.generate (\ns -> InitialState (generateInitialModelFromRandomListOfInts ns)) nonEmptyRandomListOfInts
+    Random.generate (\associations -> InitialState (initialModel associations)) (shuffle allAssociations)
 
 
-generateInitialModelFromRandomListOfInts : Model
-generateInitialModelFromRandomListOfInts =
-    let
-        allAssociationsInRandomOrder =
-            shuffle allAssociations
-    in
-        Running
-            { current = Nonempty.head allAssociationsInRandomOrder
-            , done = []
-            , input = ""
-            , left = Nonempty.tail allAssociationsInRandomOrder
-            , timer =
-                { currentTime = 0
-                , timeAtStartOfThisAssociation = 0
-                }
+initialModel : Nonempty Association -> Model
+initialModel allAssociationsInRandomOrder =
+    Running
+        { current = Nonempty.head allAssociationsInRandomOrder
+        , done = []
+        , input = ""
+        , left = Nonempty.tail allAssociationsInRandomOrder
+        , timer =
+            { currentTime = 0
+            , timeAtStartOfThisAssociation = 0
             }
+        }
 
 
 keyboard : Int -> Msg
