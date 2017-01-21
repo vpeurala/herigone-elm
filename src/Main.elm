@@ -4,7 +4,6 @@ import Char exposing (KeyCode, fromCode, isLower, isUpper)
 import Json.Decode exposing (Decoder)
 import Json.Decode as D
 import Html exposing (..)
-import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Random exposing (Generator(..), initialSeed, int, generate, list)
@@ -139,13 +138,13 @@ update action model =
 
         ( Input c, Running state ) ->
             let
-                input' =
+                input_ =
                     state.input ++ (String.fromChar c)
             in
-                if toUpper input' == toUpper state.current.word then
+                if toUpper input_ == toUpper state.current.word then
                     case state.left of
                         [] ->
-                            ( Over { state | input = input' }, Cmd.none )
+                            ( Over { state | input = input_ }, Cmd.none )
 
                         x :: xs ->
                             ( Running
@@ -166,17 +165,17 @@ update action model =
                             , Cmd.none
                             )
                 else
-                    ( Running { state | input = input' }, Cmd.none )
+                    ( Running { state | input = input_ }, Cmd.none )
 
         ( Input c, model ) ->
             ( model, Cmd.none )
 
         ( Backspace, Running state ) ->
             let
-                input' =
+                input_ =
                     String.slice 0 -1 state.input
             in
-                ( Running { state | input = input' }, Cmd.none )
+                ( Running { state | input = input_ }, Cmd.none )
 
         ( Backspace, model ) ->
             ( model, Cmd.none )
@@ -186,10 +185,10 @@ update action model =
                 timer =
                     state.timer
 
-                timer' =
+                timer_ =
                     { timer | currentTime = timer.currentTime + 1 }
             in
-                ( Running { state | timer = timer' }, Cmd.none )
+                ( Running { state | timer = timer_ }, Cmd.none )
 
         ( Tick time, model ) ->
             ( model, Cmd.none )
@@ -279,7 +278,7 @@ viewInitial =
 
 decodeKeyCode : Decoder Msg
 decodeKeyCode =
-    D.int `D.andThen` (\i -> D.succeed (keyboard i))
+    D.int |> D.andThen (\i -> D.succeed (keyboard i))
 
 
 view : Model -> Html Msg
@@ -299,7 +298,7 @@ view model =
     )
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program
         { init = init

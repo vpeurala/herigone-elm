@@ -21,18 +21,18 @@ shuffle input =
 
         --sorted : Generator (Nonempty ( a, Int ))
         sorted =
-            Random.map (Nonempty.sortBy snd) zips
+            Random.map (Nonempty.sortBy Tuple.second) zips
 
         --vals : Generator (Nonempty a)
         vals =
-            Random.map (\pairs -> Nonempty.map fst pairs) sorted
+            Random.map (\pairs -> Nonempty.map Tuple.first pairs) sorted
     in
         vals
 
 
 nonempty : Int -> Generator a -> Generator (Nonempty a)
 nonempty len gen =
-    Random.andThen gen
+    Random.andThen
         (\head ->
             let
                 tail =
@@ -40,3 +40,4 @@ nonempty len gen =
             in
                 Random.map (Nonempty.Nonempty head) tail
         )
+        gen
