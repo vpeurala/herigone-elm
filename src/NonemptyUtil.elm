@@ -1,4 +1,4 @@
-module NonemptyUtil exposing (shuffle)
+module NonemptyUtil exposing (nonempty, shuffle)
 
 import Random exposing (Generator)
 import List.Nonempty as Nonempty exposing (Nonempty)
@@ -7,32 +7,36 @@ import List.Nonempty as Nonempty exposing (Nonempty)
 shuffle : Nonempty a -> Generator (Nonempty a)
 shuffle input =
     let
-        len : Int
+        --len : Int
         len =
             Nonempty.length input
 
-        randoms : Generator (Nonempty Int)
+        --randoms : Generator (Nonempty Int)
         randoms =
-            nonempty len (Random.int 0 10000)
+            nonempty len (Random.int 0 (len * 1000))
 
-        zips : Generator (Nonempty ( Int, Int ))
+        --zips : Generator (Nonempty ( a, Int ))
         zips =
-            Random.andThen randoms (\rs -> Nonempty.map2 (,) input rs)
+            Random.map (\rs -> Nonempty.map2 (,) input rs) randoms
 
-        sorted : Generator (Nonempty ( Int, Int ))
+        --sorted : Generator (Nonempty ( a, Int ))
         sorted =
-            Random.andThen zips (Nonempty.sortBy snd)
+            Random.map (Nonempty.sortBy snd) zips
+
+        --vals : Generator (Nonempty a)
+        vals =
+            Random.map (\pairs -> Nonempty.map fst pairs) sorted
     in
-        Nonempty.sortBy snd zips |> Nonempty.map fst
+        vals
 
 
 nonempty : Int -> Generator a -> Generator (Nonempty a)
 nonempty len gen =
-    let
-        ( head, seed' ) =
-            Random.step gen (Random.initialSeed 0)
-
-        tail =
-            Random.list (len - 1) gen
-    in
-        Random.map (\tail -> Nonempty.Nonempty head tail) tail
+    Random.andThen gen
+        (\head ->
+            let
+                tail =
+                    Random.list (len - 1) gen
+            in
+                Random.map (Nonempty.Nonempty head) tail
+        )
