@@ -7,7 +7,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Random
-import String exposing (fromChar, toUpper)
+import String
 import Time exposing (Time)
 import Time
 
@@ -141,7 +141,7 @@ update action model =
                 input_ =
                     state.input ++ (String.fromChar c)
             in
-                if toUpper input_ == toUpper state.current.word then
+                if String.toUpper input_ == String.toUpper state.current.word then
                     case state.left of
                         [] ->
                             ( Over { state | input = input_ }, Cmd.none )
