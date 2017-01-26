@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Char exposing (KeyCode, fromCode, isLower, isUpper)
+import Char
 import Json.Decode exposing (Decoder)
 import Json.Decode as D
 import Html exposing (..)
@@ -103,9 +103,9 @@ keyboard x =
         c ->
             let
                 ch =
-                    fromCode c
+                    Char.fromCode c
             in
-                if isUpper ch then
+                if Char.isUpper ch then
                     Input ch
                 else
                     NoOp
