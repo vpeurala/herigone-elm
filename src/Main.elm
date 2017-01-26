@@ -23,7 +23,7 @@ import List.Nonempty as Nonempty
 -- Application
 
 import Associations exposing (..)
-import NonemptyUtil exposing (shuffle)
+import NonemptyUtil as Nonempty
 
 
 -- Code
@@ -68,7 +68,7 @@ type Msg
 
 getInitialState : Cmd Msg
 getInitialState =
-    Random.generate (\associations -> InitialState (initialModel associations)) (shuffle allAssociations)
+    Random.generate (\associations -> InitialState (initialModel associations)) (Nonempty.shuffle allAssociations)
 
 
 initialModel : Nonempty Association -> Model
