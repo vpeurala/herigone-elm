@@ -68,7 +68,9 @@ type Msg
 
 getInitialState : Cmd Msg
 getInitialState =
-    Random.generate (\associations -> InitialState (initialModel associations)) (Nonempty.shuffle allAssociations)
+    Nonempty.shuffle allAssociations
+        |> Random.map initialModel
+        |> Random.generate InitialState
 
 
 initialModel : Nonempty Association -> Model
