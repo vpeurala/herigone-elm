@@ -14,7 +14,7 @@ import Time
 
 -- OS
 
-import Formatting exposing (..)
+import Formatting
 import Keyboard
 import List.Nonempty exposing (Nonempty)
 import List.Nonempty as Nonempty
@@ -234,12 +234,12 @@ viewRunning state =
 
 formatWholeGameTimer : GameState -> String
 formatWholeGameTimer state =
-    print (padLeft 6 '0' (Formatting.roundTo 2)) (state.timer.currentTime / 25) ++ "s"
+    Formatting.print (Formatting.padLeft 6 '0' (Formatting.roundTo 2)) (state.timer.currentTime / 25) ++ "s"
 
 
 formatCurrentWordTimer : GameState -> String
 formatCurrentWordTimer state =
-    print (padLeft 6 '0' (Formatting.roundTo 2)) ((state.timer.currentTime - state.timer.timeAtStartOfThisAssociation) / 25) ++ "s"
+    Formatting.print (Formatting.padLeft 6 '0' (Formatting.roundTo 2)) ((state.timer.currentTime - state.timer.timeAtStartOfThisAssociation) / 25) ++ "s"
 
 
 viewDiv : GameState -> String -> String -> String -> Html Msg
