@@ -6,7 +6,7 @@ import Json.Decode as D
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Random exposing (Generator(..), initialSeed, int, generate, list)
+import Random
 import String exposing (fromChar, toUpper)
 import Time exposing (Time)
 import Time
