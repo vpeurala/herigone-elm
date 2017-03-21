@@ -59,7 +59,7 @@ allAssociations =
         , { number = "29", word = "kavio" }
         , { number = "30", word = "liha" }
         , { number = "31", word = "lyijy" }
-        , { number = "32", word = "laki" }
+        , { number = "32", word = "leka" }
         , { number = "33", word = "luola" }
         , { number = "34", word = "liima" }
         , { number = "35", word = "lapio" }
