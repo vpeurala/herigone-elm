@@ -1,0 +1,11 @@
+$ORIGIN herigone.com.
+$TTL 1h
+herigone.com. 3600 IN SOA ns1.dnsimple.com. admin.dnsimple.com. 2015060106 86400 7200 604800 300
+herigone.com. 3600 IN NS ns1.dnsimple.com.
+herigone.com. 3600 IN NS ns2.dnsimple.com.
+herigone.com. 3600 IN NS ns3.dnsimple.com.
+herigone.com. 3600 IN NS ns4.dnsimple.com.
+herigone.com. 60 IN A 95.85.25.96
+www.herigone.com. 60 IN CNAME herigone.com.
+_acme-challenge.www.herigone.com. 60 IN TXT Xu0Y4ozlu0D_27l4qzhSWeOLCnjWZRCP4ocmtpWT4qQ
+_acme-challenge.herigone.com. 60 IN TXT I_zi4FYxKUrZiMD7XNKEH7vWzv7WfcG0YEuRGaEPIZY
